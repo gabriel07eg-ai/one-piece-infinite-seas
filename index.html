@@ -1,91 +1,361 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1824">
 <title>One Piece: Infinite Seas</title>
 <style>
-:root{--bg:#081522;--panel:#102538;--panel2:#16334a;--gold:#f6c453;--text:#edf6ff;--muted:#9bb2c5;--green:#63d69b;--red:#ff7777}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173b54,#081522 65%);color:var(--text);font:15px system-ui,Segoe UI,sans-serif}
-header{padding:22px max(18px,calc((100% - 1100px)/2));background:linear-gradient(90deg,#0b1c2cdd,#153b54dd);border-bottom:1px solid #ffffff1c;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
-h1{margin:0;font-size:clamp(22px,4vw,32px);letter-spacing:.5px}header p{margin:4px 0 0;color:var(--muted)}
-main{max-width:1100px;margin:auto;padding:18px;display:grid;gap:15px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat,.panel{background:linear-gradient(145deg,var(--panel),#0d2030);border:1px solid #ffffff18;border-radius:15px;padding:15px;box-shadow:0 8px 24px #0002}
-.stat small{display:block;color:var(--muted)}.stat b{font-size:22px;color:var(--gold)}
-nav{display:flex;gap:8px;flex-wrap:wrap}.tab,button{border:1px solid #ffffff20;background:#1b3b52;color:var(--text);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:650}.tab.active,button.primary{background:var(--gold);color:#17202a;border-color:var(--gold)}button:disabled{opacity:.4;cursor:not-allowed}
-.panel h2{margin:0 0 12px;font-size:20px}.muted{color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.card{background:linear-gradient(145deg,var(--panel2),#10283b);border:1px solid #ffffff19;border-radius:13px;padding:13px;min-width:0}.card h3{margin:0 0 4px}.portrait{font-size:38px;float:right;margin-left:8px}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);font-weight:800}
-.bar{height:9px;background:#07131e;border-radius:99px;overflow:hidden;margin:8px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#42c78c,#a5f2b8);border-radius:99px}
-.log{max-height:170px;overflow:auto;font-size:13px;color:var(--muted);line-height:1.65}.log div{border-bottom:1px solid #ffffff0c;padding:3px 0}
-.hidden{display:none}.big{font-size:27px;color:var(--gold);font-weight:800}.island{background:linear-gradient(120deg,#1d5360,#173448);border-radius:14px;padding:16px;border:1px solid #ffffff20}
-footer{text-align:center;color:var(--muted);padding:5px 0 20px;font-size:12px}
-@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}header{position:static}.stat b{font-size:19px}}
-</style></head>
-<body>
-<header><h1>☠️ ONE PIECE: INFINITE SEAS</h1><p>Monte sua tripulação. Conquiste os mares. Construa seu império pirata.</p></header>
-<main>
-<section class="stats">
- <div class="stat"><small>💰 Berries</small><b id="berries">0</b></div>
- <div class="stat"><small>⚔️ Poder da tripulação</small><b id="power">0</b></div>
- <div class="stat"><small>🌊 Ilha atual</small><b id="island">East Blue</b></div>
- <div class="stat"><small>🚢 Frota</small><b id="fleet">1 navio</b></div>
-</section>
-<nav>
-<button class="tab active" data-tab="adventure">⚔️ Aventura</button><button class="tab" data-tab="crew">🏴‍☠️ Tripulação</button><button class="tab" data-tab="gacha">✨ Recrutamento</button><button class="tab" data-tab="empire">🏝️ Império</button>
-</nav>
-<section id="adventure" class="panel">
- <div class="row"><div><div class="tag">Batalha automática</div><h2 id="enemyName">Bandido do Mar</h2><div class="muted" id="enemyInfo">Uma ameaça está bloqueando sua rota.</div></div><div class="big" id="enemyHp">100 HP</div></div>
- <div class="bar"><span id="enemyBar" style="width:100%"></span></div>
- <div class="row"><div><b id="battleStatus">Sua tripulação está pronta!</b><div class="muted" id="battleHint">A cada segundo, sua equipe causa dano automaticamente.</div></div><button class="primary" id="attackBtn">⚔️ Atacar agora</button></div>
- <div class="row" style="margin-top:15px"><button id="nextIsland">Explorar próxima ilha →</button><span class="muted" id="progressText">Vitórias: 0</span></div>
-</section>
-<section id="crew" class="panel hidden"><div class="row"><div><div class="tag">Seus companheiros</div><h2>Tripulação atual</h2></div><span class="muted" id="crewCount">0 personagens</span></div><div id="crewList" class="grid"></div></section>
-<section id="gacha" class="panel hidden"><div class="tag">Taverna de recrutamento</div><h2>Encontre novos aliados</h2><p class="muted">Recrute personagens aleatórios. Quanto maior a raridade, mais poder e habilidades eles trazem.</p><div class="grid">
-<div class="card"><div class="portrait">🍖</div><h3>Recrutamento comum</h3><p class="muted">Custa 500 berries · garantido personagem</p><button class="primary" id="pull1">Recrutar ×1</button></div>
-<div class="card"><div class="portrait">💎</div><h3>Recrutamento especial</h3><p class="muted">Custa 4.500 berries · 10 tentativas</p><button id="pull10">Recrutar ×10</button></div></div><p id="pullResult" class="muted" aria-live="polite">Dica: avance nas ilhas para ganhar berries mais rápido.</p><div class="muted">Chances: Comum 45% · Raro 30% · Épico 17% · Lendário 7% · Mítico 1%</div></section>
-<section id="empire" class="panel hidden"><div class="tag">Tycoon pirata</div><h2>Seu império nos mares</h2><div class="island"><div class="row"><div><h3>🏝️ Base pirata</h3><div class="muted">Sua ilha produz berries mesmo quando você está longe.</div></div><div class="big" id="income">+1/s</div></div></div><div class="grid" style="margin-top:12px">
-<div class="card"><div class="portrait">🏦</div><h3>Mercado negro</h3><p class="muted">Aumenta a renda passiva em +2 berries/s.</p><b id="marketLevel">Nível 1</b><p><button id="upgradeMarket">Melhorar · 800 ฿</button></p></div>
-<div class="card"><div class="portrait">⚓</div><h3>Estaleiro</h3><p class="muted">Constrói navios que aumentam sua renda e poder global.</p><b id="shipLevel">1 navio</b><p><button id="buildShip">Construir · 2.000 ฿</button></p></div>
-<div class="card"><div class="portrait">🗺️</div><h3>Mapa de rotas</h3><p class="muted">Rotas comerciais mais seguras e lucrativas.</p><b id="routeLevel">Nível 0</b><p><button id="upgradeRoute">Melhorar · 1.500 ฿</button></p></div></div>
-</section>
-<section class="panel"><div class="row"><h2>📜 Diário de bordo</h2><button id="saveBtn">Salvar agora</button></div><div class="log" id="log"></div></section>
-<footer>Jogo de fã não oficial. Progresso salvo neste navegador. Feche e volte quando quiser.</footer>
-</main>
-<script>
-const $=id=>document.getElementById(id);
-const names=[
-["Luffy","🍖","Capitão"],["Zoro","⚔️","Espadachim"],["Nami","🌩️","Navegadora"],["Usopp","🎯","Atirador"],["Sanji","🍳","Cozinheiro"],["Chopper","🦌","Médico"],["Robin","📚","Arqueóloga"],["Franky","🤖","Engenheiro"],["Brook","🎻","Músico"],["Jinbe","🌊","Timoneiro"],["Smoker","💨","Marinha"],["Tashigi","🗡️","Espadachim"],["Crocodile","🦂","Shichibukai"],["Doflamingo","🕶️","Pirata"],["Katakuri","🍩","Comandante"],["Boa Hancock","🐍","Imperatriz"],["Mihawk","🦅","Espadachim"],["Shanks","🍷","Yonkou"],["Kaido","🐉","Yonkou"],["白ひげ","🌋","Lenda"]];
-const rarity=[["Comum",1,45],["Raro",2.2,30],["Épico",5,17],["Lendário",12,7],["Mítico",30,1]];
-const islands=["East Blue","Alabasta","Water 7","Enies Lobby","Thriller Bark","Marineford","Dressrosa","Whole Cake","Wano","Egghead"];
-let s={berries:1800,crew:[{name:"Luffy",emoji:"🍖",role:"Capitão",rarity:"Raro",level:1,power:22}],island:0,wins:0,enemyHp:100,enemyMax:100,market:1,ships:1,routes:0,last:Date.now(),logs:[]};
-function log(t){s.logs.unshift(t);s.logs=s.logs.slice(0,30);$("log").innerHTML=s.logs.map(x=>`<div>• ${x}</div>`).join("")}
-function fmt(n){return Math.floor(n).toLocaleString("pt-BR")}
-function power(){return s.crew.reduce((a,c)=>a+c.power*c.level,0)+s.ships*12}
-function income(){return s.market*2+s.ships*3+s.routes*5}
-function save(){s.last=Date.now();localStorage.setItem("infiniteSeasSave",JSON.stringify(s));log("Progresso salvo no navegador.")}
-function load(){try{let v=JSON.parse(localStorage.getItem("infiniteSeasSave"));if(v){s={...s,...v};let away=Math.min(8*3600,Math.max(0,(Date.now()-s.last)/1000));let earned=away*income();s.berries+=earned;if(earned>1)log(`Enquanto você esteve fora, sua base produziu ${fmt(earned)} berries.`)}}catch(e){}}
-function enemy(){let base=100*Math.pow(1.42,s.island)+s.wins*12;s.enemyMax=Math.floor(base);s.enemyHp=s.enemyMax;$("enemyName").textContent=["Bandido do Mar","Capitão Pirata","Agente do Governo","Caçador de Recompensas","Oficial da Marinha"][s.wins%5];$("enemyInfo").textContent=`Recompensa: ${fmt(80+base*.8)} berries · Região: ${islands[s.island]}`;render()}
-function hurt(d){s.enemyHp-=d;if(s.enemyHp<=0){let reward=80+s.enemyMax*.8;s.berries+=reward;s.wins++;log(`Vitória! Você ganhou ${fmt(reward)} berries.`);enemy()}else render()}
-function roll(){let r=Math.random()*100,acc=0;for(let x of rarity){acc+=x[2];if(r<=acc)return x}return rarity[0]}
-function recruit(){let x=roll(),pool=names.filter(n=>x[0]==="Mítico"?["Katakuri","Shanks","Kaido","白ひげ","Mihawk"].includes(n[0]):x[0]==="Lendário"?["Crocodile","Doflamingo","Boa Hancock","Smoker","Jinbe","Robin"].includes(n[0]):true);let n=pool[Math.floor(Math.random()*pool.length)];let existing=s.crew.find(c=>c.name===n[0]);if(existing){existing.level++;existing.power+=Math.ceil(5*x[1]);log(`${n[0]} repetido! Nível aumentado para ${existing.level}.`)}else{s.crew.push({name:n[0],emoji:n[1],role:n[2],rarity:x[0],level:1,power:Math.ceil(10*x[1])});log(`${n[0]} entrou para a tripulação! (${x[0]})`)}return `${n[1]} ${n[0]} — ${x[0]}`}
-function render(){
-$("berries").textContent=fmt(s.berries);$("power").textContent=fmt(power());$("island").textContent=islands[s.island];$("fleet").textContent=s.ships+" navio(s)";
-$("enemyHp").textContent=fmt(Math.max(0,s.enemyHp))+" / "+fmt(s.enemyMax)+" HP";$("enemyBar").style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+"%";$("progressText").textContent="Vitórias: "+s.wins;
-$("crewCount").textContent=s.crew.length+" personagens";$("crewList").innerHTML=s.crew.map(c=>`<div class="card"><div class="portrait">${names.find(n=>n[0]===c.name)?.[1]||"🏴‍☠️"}</div><div class="tag">${c.rarity}</div><h3>${c.name}</h3><div class="muted">${c.role||"Aliado"} · Nível ${c.level}</div><p>⚔️ Poder: ${fmt(c.power*c.level)}</p><button data-train="${c.name}">Treinar · ${fmt(100*c.level)} ฿</button></div>`).join("");
-$("income").textContent="+"+income()+"/s";$("marketLevel").textContent="Nível "+s.market;$("shipLevel").textContent=s.ships+" navio(s)";$("routeLevel").textContent="Nível "+s.routes;
-$("upgradeMarket").textContent=`Melhorar · ${fmt(800*s.market)} ฿`;$("buildShip").textContent=`Construir · ${fmt(2000*s.ships)} ฿`;$("upgradeRoute").textContent=`Melhorar · ${fmt(1500*(s.routes+1))} ฿`;
-document.querySelectorAll("[data-train]").forEach(b=>b.onclick=()=>{let c=s.crew.find(x=>x.name===b.dataset.train),cost=100*c.level;if(s.berries>=cost){s.berries-=cost;c.level++;c.power+=5;log(`${c.name} treinou e ficou mais forte.`);render()}});
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+ --bg:#08131d;--navy:#0d2030;--panel:#10283a;--panel2:#17364a;--line:#315064;
+ --gold:#e8bd65;--gold2:#f5d996;--cream:#f5eddb;--muted:#9db1bd;--sea:#3d9aa3;
+ --green:#78c7a1;--red:#df7774;--blue:#75a9d6;--shadow:0 18px 48px #02080d80;
 }
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));["adventure","crew","gacha","empire"].forEach(id=>$(id).classList.toggle("hidden",id!==b.dataset.tab))});
-$("attackBtn").onclick=()=>hurt(Math.max(1,Math.floor(power()*.7)));
-$("nextIsland").onclick=()=>{if(s.wins>=3*(s.island+1)){if(s.island<islands.length-1){s.island++;s.wins=0;log(`Nova região desbloqueada: ${islands[s.island]}!`);enemy()}}else log(`Derrote mais ${3*(s.island+1)-s.wins} inimigos para liberar a próxima ilha.`)};
-$("pull1").onclick=()=>{if(s.berries<500){$("pullResult").textContent="Berries insuficientes!";return}s.berries-=500;$("pullResult").textContent="Recrutado: "+recruit();render()};
-$("pull10").onclick=()=>{if(s.berries<4500){$("pullResult").textContent="Berries insuficientes!";return}s.berries-=4500;let got=[];for(let i=0;i<10;i++)got.push(recruit());$("pullResult").textContent="Sua leva: "+got.join(" · ");render()};
-$("upgradeMarket").onclick=()=>{let c=800*s.market;if(s.berries>=c){s.berries-=c;s.market++;log("Mercado negro melhorado!");render()}};
-$("buildShip").onclick=()=>{let c=2000*s.ships;if(s.berries>=c){s.berries-=c;s.ships++;log("Novo navio construído!");render()}};
-$("upgradeRoute").onclick=()=>{let c=1500*(s.routes+1);if(s.berries>=c){s.berries-=c;s.routes++;log("Nova rota comercial estabelecida!");render()}};
-$("saveBtn").onclick=save;
-load();if(!s.enemyMax||s.enemyMax<1)enemy();else{ $("enemyName").textContent="Inimigo da região";render()}
-log("Bem-vindo aos mares! Sua aventura começa agora.");
-setInterval(()=>{s.berries+=income();hurt(Math.max(1,Math.floor(power()*.12)));render()},1000);
-setInterval(()=>{s.last=Date.now();localStorage.setItem("infiniteSeasSave",JSON.stringify(s))},10000);
-</script></body></html>
+*{box-sizing:border-box}
+body{margin:0;color:var(--cream);background:radial-gradient(ellipse at 50% -20%,#234c5a 0,#102a3a 30%,var(--bg) 72%);font:14px Inter,system-ui,sans-serif;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{opacity:.42;cursor:not-allowed}
+.topbar{height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,54px);border-bottom:1px solid #ffffff18;background:#081723e8;backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:22px;box-shadow:inset 0 0 0 4px #e8bd6517}
+.brand strong{font:800 22px 'Barlow Condensed',sans-serif;letter-spacing:1.2px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2.3px;text-transform:uppercase;margin-top:1px}
+.resources{display:flex;gap:9px;align-items:center}.resource{background:#132b3b;border:1px solid #ffffff18;border-radius:10px;padding:8px 12px;min-width:102px}.resource small{display:block;color:var(--muted);font-size:10px}.resource b{font:700 17px 'Barlow Condensed',sans-serif;color:var(--gold2)}
+.layout{max-width:1440px;margin:auto;padding:22px clamp(12px,3vw,38px) 44px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}
+.sidebar{align-self:start;position:sticky;top:94px;background:linear-gradient(160deg,#122b3d,#0c1c29);border:1px solid #ffffff18;border-radius:16px;padding:12px;box-shadow:var(--shadow)}
+.nav-label{font-size:10px;letter-spacing:2px;color:#78909e;text-transform:uppercase;padding:10px 11px 7px}
+.navbtn{display:flex;align-items:center;gap:11px;width:100%;border:0;background:transparent;padding:12px;border-radius:10px;text-align:left;color:#b6c8d0;font-weight:600;margin:2px 0;transition:.2s}
+.navbtn .ico{font-size:18px;width:22px;text-align:center}.navbtn:hover{background:#ffffff0b;color:white}.navbtn.active{background:linear-gradient(100deg,#e8bd6526,#e8bd650a);color:var(--gold2);box-shadow:inset 3px 0 var(--gold)}
+.side-note{margin:16px 5px 4px;padding:13px;border-radius:11px;background:#07141e;border:1px solid #ffffff12;color:var(--muted);font-size:11px;line-height:1.55}
+.content{min-width:0}.view{display:none;animation:fade .25s ease}.view.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.page-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:4px 0 18px}.eyebrow{font-size:10px;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold);font-weight:800}.page-head h1{font:800 clamp(29px,4vw,43px)/.98 'Barlow Condensed',sans-serif;margin:5px 0 0;letter-spacing:.5px}.page-head p{margin:7px 0 0;color:var(--muted);max-width:650px;line-height:1.55}
+.panel{background:linear-gradient(145deg,#132d40,#0d2030 75%);border:1px solid #ffffff19;border-radius:16px;padding:18px;box-shadow:0 12px 30px #02090e4a}
+.panel-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.panel-title h2{font:700 22px 'Barlow Condensed',sans-serif;margin:0;letter-spacing:.4px}.muted{color:var(--muted)}.tiny{font-size:11px}.gold{color:var(--gold2)}.btn{border:1px solid #ffffff20;background:#1a3a4e;padding:10px 14px;border-radius:9px;font-weight:700;transition:.18s}.btn:hover:not(:disabled){transform:translateY(-1px);border-color:#ffffff55;background:#244c61}.btn.primary{background:linear-gradient(135deg,#f0d38e,#d8a94e);color:#1a2630;border:0}.btn.ghost{background:transparent}.btn.small{padding:7px 10px;font-size:12px}.btn.danger{border-color:#d76d6d55;color:#f39a95}
+.hero{position:relative;overflow:hidden;min-height:275px;border-radius:18px;border:1px solid #ffffff24;background:linear-gradient(90deg,#071823f2 0%,#0a1e2bdc 43%,#0b2736a8 100%),radial-gradient(ellipse at 78% 25%,#4b8790 0,#245366 24%,#102d42 55%,#071722 100%);box-shadow:var(--shadow);padding:24px;display:flex;align-items:end}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#07141c 0,transparent 45%),repeating-linear-gradient(170deg,transparent 0 32px,#ffffff05 33px 34px);pointer-events:none}
+.hero-art{position:absolute;right:4%;top:5%;font-size:clamp(110px,18vw,210px);opacity:.23;filter:drop-shadow(0 12px 16px #000);transform:rotate(-8deg)}
+.hero-copy{position:relative;z-index:1;max-width:650px}.hero h2{font:900 clamp(34px,5vw,56px)/.9 'Barlow Condensed',sans-serif;margin:9px 0 12px;text-transform:uppercase}.hero p{color:#c3d1d4;line-height:1.6;max-width:520px;margin:0 0 17px}.hero-actions{display:flex;gap:9px;flex-wrap:wrap}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.statbox{padding:13px 15px;border:1px solid #ffffff17;border-radius:12px;background:#10283a}.statbox small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}.statbox b{display:block;font:700 23px 'Barlow Condensed',sans-serif;color:var(--gold2);margin-top:4px}
+.two-col{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.activity-list{display:grid;gap:9px}.activity{display:flex;align-items:center;gap:12px;background:#0b1d2a;border:1px solid #ffffff12;border-radius:11px;padding:11px}.activity-icon{width:42px;height:42px;border-radius:10px;background:#1b3d4e;display:grid;place-items:center;font-size:22px;flex:none}.activity b{display:block;font-size:13px}.activity small{color:var(--muted);font-size:11px;display:block;margin-top:3px}.activity .right{margin-left:auto;text-align:right}
+.ship-scene{min-height:190px;border-radius:13px;background:linear-gradient(180deg,#367d89,#18495d 58%,#102c40);position:relative;overflow:hidden;border:1px solid #ffffff1c;display:grid;place-items:center}
+.ship-scene:before{content:"";position:absolute;left:-10%;right:-10%;bottom:18px;height:48px;border-radius:50%;background:repeating-linear-gradient(0deg,#6db0ae22 0 2px,transparent 3px 9px);transform:rotate(-2deg)}
+.ship-emoji{font-size:88px;filter:drop-shadow(0 14px 8px #07121b88);z-index:1}.scene-label{position:absolute;left:13px;top:12px;font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:#e4f2e9}
+.map-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);gap:14px}
+.map-board{position:relative;min-height:500px;overflow:hidden;border-radius:16px;border:1px solid #ffffff22;background:radial-gradient(ellipse at 50% 50%,#1c6170 0,#124254 40%,#0b2c40 75%,#092033 100%)}
+.map-board:before{content:"";position:absolute;inset:-20%;opacity:.17;background:repeating-radial-gradient(ellipse at 50% 50%,transparent 0 35px,#a8d6d1 36px 37px,transparent 38px 72px);transform:rotate(-12deg)}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff0b 1px,transparent 1px),linear-gradient(90deg,#ffffff0b 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+.map-title{position:absolute;top:20px;left:22px;font:800 25px 'Barlow Condensed',sans-serif;letter-spacing:2px;color:#c2e0d8;text-shadow:0 2px 8px #00131c}
+.island-node{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;text-align:center;min-width:90px;padding:0;color:#f4ebd8;z-index:2}
+.island-node .land{display:grid;place-items:center;margin:auto;width:65px;height:48px;border-radius:48% 52% 44% 56%;background:linear-gradient(145deg,#9bbd82,#477c68 65%,#285c58);border:3px solid #d4c18a;box-shadow:0 8px 0 #092b3a,0 12px 22px #00131c88;font-size:27px;transition:.2s}
+.island-node:hover .land,.island-node.selected .land{transform:scale(1.13);box-shadow:0 0 0 4px #e8bd6540,0 8px 0 #092b3a,0 12px 22px #00131c88}
+.island-node.locked{opacity:.35;filter:grayscale(1)}
+.island-node b{display:block;font-size:11px;text-shadow:0 2px 5px #00131c;margin-top:8px;white-space:nowrap}
+.route-line{position:absolute;height:2px;background:repeating-linear-gradient(90deg,#e8bd65 0 8px,transparent 8px 15px);transform-origin:left center;opacity:.8;z-index:1}
+.detail-card{background:#0b1d2a;border:1px solid #ffffff17;border-radius:13px;padding:16px}.detail-card h3{font:700 24px 'Barlow Condensed',sans-serif;margin:5px 0}.detail-card .island-illustration{font-size:54px;text-align:center;padding:15px;background:linear-gradient(150deg,#1b5362,#102d42);border-radius:10px;margin-bottom:12px}
+.progress{height:7px;border-radius:20px;background:#07141d;overflow:hidden;margin:8px 0}.progress span{height:100%;display:block;background:linear-gradient(90deg,#6ebf9d,#d2d58d);border-radius:20px}
+.crew-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px}
+.char-card{background:linear-gradient(150deg,#1a3a4d,#0c2030);border:1px solid #ffffff1a;border-radius:13px;padding:12px;position:relative;overflow:hidden}
+.char-card .char-top{display:flex;gap:10px;align-items:center}.char-avatar{width:64px;height:72px;border-radius:10px;background:linear-gradient(145deg,#376576,#142d40);display:grid;place-items:center;font-size:36px;border:1px solid #ffffff22;flex:none;position:relative}
+.char-avatar:after{content:"SPRITE";position:absolute;bottom:3px;font-size:7px;letter-spacing:1px;color:#c4d4d0aa}
+.char-name{font:700 20px 'Barlow Condensed',sans-serif}.rarity{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);font-weight:800}.char-role{font-size:10px;color:var(--muted);margin-top:3px}.char-stats{display:flex;justify-content:space-between;margin:11px 0 8px;color:#c2d1d6;font-size:11px}
+.slot-list{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.slot{border:1px dashed #496477;background:#0b1c29;border-radius:10px;min-height:95px;padding:8px;text-align:center;display:grid;align-content:center;gap:4px}.slot.filled{border-style:solid;border-color:#8e7950;background:#173447}.slot .slot-avatar{font-size:24px}.slot b{font-size:10px}.slot small{font-size:9px;color:var(--muted)}
+.team-block{margin-bottom:16px}.team-block h3{font:700 18px 'Barlow Condensed',sans-serif;margin:0 0 9px;color:var(--gold2)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}.filter{border:1px solid #ffffff22;background:#102638;color:#b6c9d1;border-radius:20px;padding:7px 11px;font-size:11px}.filter.active{background:#e8bd65;color:#17232a;border-color:#e8bd65;font-weight:800}
+.banner{background:linear-gradient(110deg,#3c5960,#172f43 52%,#382d40);border:1px solid #ffffff2a;border-radius:16px;padding:20px;position:relative;overflow:hidden;margin-bottom:14px}
+.banner:after{content:"✨";position:absolute;right:8%;top:5px;font-size:120px;opacity:.14}.banner h2{font:900 34px 'Barlow Condensed',sans-serif;margin:5px 0}.banner p{color:#c5d1d0;max-width:500px;line-height:1.5}
+.pull-actions{display:flex;gap:8px;flex-wrap:wrap}.pull-result{background:#091b28;border:1px solid #ffffff17;padding:13px;border-radius:11px;margin-top:12px;min-height:50px;color:#e8d9b7;line-height:1.5}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:11px}.skin-card{background:#10283a;border:1px solid #ffffff18;border-radius:13px;padding:13px;text-align:center}.skin-preview{font-size:45px;padding:14px;background:linear-gradient(140deg,#2b5662,#132b3e);border-radius:10px;margin-bottom:10px}.skin-card h3{font:700 18px 'Barlow Condensed',sans-serif;margin:5px}.skin-card p{font-size:10px;color:var(--muted);min-height:28px}
+.expedition{background:#0b1d2a;border:1px solid #ffffff18;border-radius:12px;padding:13px;margin-bottom:9px}.exp-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.exp-head b{font-size:13px}.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#e8bd65;color:#17232a;padding:11px 17px;border-radius:9px;font-weight:800;box-shadow:var(--shadow);transition:.25s;z-index:40}.toast.show{opacity:1;transform:translate(-50%,0)}
+.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed #ffffff2a;border-radius:12px}
+.footer-note{color:#728895;font-size:10px;text-align:center;padding:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;gap:4px;padding:7px}.nav-label,.side-note{display:none}.navbtn{width:auto;white-space:nowrap;padding:10px}.two-col,.map-layout{grid-template-columns:1fr}.map-board{min-height:420px}}
+@media(max-width:620px){.topbar{height:auto;min-height:68px;align-items:flex-start;padding:12px;gap:10px;flex-direction:column}.resources{width:100%}.resource{flex:1;min-width:0}.layout{padding:12px}.stats-row{grid-template-columns:repeat(2,1fr)}.hero{min-height:290px;padding:18px}.hero-art{right:-4%;top:8%;font-size:130px}.slot-list{grid-template-columns:repeat(2,1fr)}.page-head{align-items:flex-start;flex-direction:column}.map-board{min-height:390px}.island-node .land{width:51px;height:40px;font-size:21px}.island-node{min-width:70px}.island-node b{font-size:9px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><div class="brand-mark">☠</div><div><strong>INFINITE SEAS</strong><small>Uma aventura sem limites</small></div></div>
+ <div class="resources">
+  <div class="resource"><small>💰 Berries</small><b id="berries">2.500</b></div>
+  <div class="resource"><small>✨ Dials de recrutamento</small><b id="dials">120</b></div>
+  <div class="resource"><small>🧭 Nível de capitão</small><b id="captainLevel">1</b></div>
+ </div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <div class="nav-label">Navegação</div>
+  <button class="navbtn active" data-view="home"><span class="ico">⚓</span> Convés do navio</button>
+  <button class="navbtn" data-view="world"><span class="ico">🗺️</span> Mapa-múndi</button>
+  <button class="navbtn" data-view="battle"><span class="ico">⚔️</span> Combate</button>
+  <button class="navbtn" data-view="crew"><span class="ico">🏴‍☠️</span> Coleção</button>
+  <button class="navbtn" data-view="recruit"><span class="ico">✨</span> Recrutamento</button>
+  <button class="navbtn" data-view="expeditions"><span class="ico">🧭</span> Expedições</button>
+  <button class="navbtn" data-view="shop"><span class="ico">🛍️</span> Loja de skins</button>
+  <button class="navbtn" data-view="upgrade"><span class="ico">🛠️</span> Melhorias</button>
+  <div class="side-note">Seu diário continua mesmo quando você fecha o jogo. Volte para recolher os frutos da sua jornada.</div>
+ </aside>
+ <main class="content">
+  <section class="view active" id="view-home">
+   <div class="hero">
+    <div class="hero-art">⛵</div>
+    <div class="hero-copy"><div class="eyebrow">O mar está chamando, capitão</div><h2>Seu próprio<br>destino começa aqui.</h2><p>Explore ilhas, reúna aliados de todas as facções e construa uma tripulação que atravesse os mares mais perigosos.</p><div class="hero-actions"><button class="btn primary" data-go="world">Explorar o mundo →</button><button class="btn" data-go="crew">Ver tripulação</button></div></div>
+   </div>
+   <div class="stats-row">
+    <div class="statbox"><small>Região atual</small><b id="homeRegion">East Blue</b></div>
+    <div class="statbox"><small>Ilhas descobertas</small><b id="islandsFound">1 / 12</b></div>
+    <div class="statbox"><small>Poder de combate</small><b id="teamPower">0</b></div>
+    <div class="statbox"><small>Vitórias</small><b id="wins">0</b></div>
+   </div>
+   <div class="two-col">
+    <div class="panel"><div class="panel-title"><h2>Vida a bordo</h2><span class="eyebrow">Seu navio</span></div><div class="ship-scene"><span class="scene-label" id="shipLocation">Navegando pelo East Blue</span><div class="ship-emoji">⛵</div></div><p class="muted tiny" style="line-height:1.6;margin-bottom:0">A tripulação trabalha, descansa e se prepara para a próxima ilha. As viagens e atividades continuam avançando mesmo quando você está longe.</p></div>
+    <div class="panel"><div class="panel-title"><h2>Diário de bordo</h2><span class="eyebrow">Recentes</span></div><div class="activity-list" id="homeLog"><div class="activity"><div class="activity-icon">📜</div><div><b>Uma nova jornada</b><small>Seu navio está pronto para zarpar.</small></div></div></div></div>
+   </div>
+  </section>
+
+  <section class="view" id="view-world">
+   <div class="page-head"><div><div class="eyebrow">Navegação livre</div><h1>Mapa-múndi</h1><p>Escolha seu próximo destino. Cada ilha guarda inimigos, recompensas e possíveis encontros.</p></div><span class="gold tiny" id="travelStatus">Navio ancorado</span></div>
+   <div class="map-layout">
+    <div class="map-board" id="mapBoard"><div class="map-grid"></div><div class="map-title">GRAND LINE & BLUE SEAS</div></div>
+    <div class="detail-card" id="islandDetail"><div class="island-illustration">🏝️</div><div class="eyebrow">Destino selecionado</div><h3>Foosha Village</h3><p class="muted tiny">Um pequeno vilarejo no East Blue. O começo de uma grande aventura.</p><div class="progress"><span style="width:100%"></span></div><p class="tiny muted">Perigo: baixo · Recompensas: Berries e materiais</p><button class="btn primary" id="travelBtn">Navegar até aqui</button></div>
+   </div>
+  </section>
+
+  <section class="view" id="view-battle">
+   <div class="page-head"><div><div class="eyebrow">Combate automático</div><h1>Confronto nos mares</h1><p>Sua equipe luta automaticamente. As reservas fornecem bônus passivos à formação.</p></div><span class="gold tiny" id="battleLocation">Foosha Village</span></div>
+   <div class="two-col">
+    <div class="panel">
+     <div class="panel-title"><h2 id="enemyName">Bandido do Mar</h2><span class="rarity" id="enemyLevel">AMEAÇA COMUM</span></div>
+     <div class="activity" style="margin-bottom:12px"><div class="activity-icon" id="enemyIcon">🏴‍☠️</div><div><b id="enemyTitle">Bando de saqueadores</b><small id="enemySub">Uma ameaça bloqueia a rota.</small></div><div class="right"><b class="gold" id="enemyHp">100 / 100</b><small class="muted">HP</small></div></div>
+     <div class="progress"><span id="enemyBar" style="width:100%"></span></div>
+     <div class="row" style="display:flex;justify-content:space-between;align-items:center;margin-top:13px;gap:10px"><span class="muted tiny" id="battleStatus">Sua equipe está pronta.</span><button class="btn primary" id="attackBtn">⚔️ Ataque manual</button></div>
+     <div class="pull-result" id="battleFeed">A batalha automática começará assim que você chegar a uma ilha.</div>
+    </div>
+    <div class="panel"><div class="panel-title"><h2>Formação de combate</h2><span class="eyebrow">5 + 5</span></div><div class="team-block"><h3>Ativos</h3><div class="slot-list" id="activeSlots"></div></div><div class="team-block"><h3>Reservas · buffs</h3><div class="slot-list" id="reserveSlots"></div></div><p class="muted tiny">Os cinco reservas não entram no campo: cada um concede um bônus de suporte à equipe ativa.</p></div>
+   </div>
+  </section>
+
+  <section class="view" id="view-crew">
+   <div class="page-head"><div><div class="eyebrow">Coleção livre</div><h1>Tripulação & personagens</h1><p>Todo personagem evolui individualmente. Pré e pós-timeskip são versões jogáveis distintas; roupas alternativas são apenas cosméticas.</p></div><button class="btn" id="formationBtn">Editar formação</button></div>
+   <div class="panel" style="margin-bottom:14px"><div class="panel-title"><h2>Formação atual</h2><span class="muted tiny">Selecione personagens abaixo para trocar os espaços</span></div><div class="team-block"><h3>Ativos · até 5</h3><div class="slot-list" id="crewActiveSlots"></div></div><div class="team-block"><h3>Reservas · até 5</h3><div class="slot-list" id="crewReserveSlots"></div></div></div>
+   <div class="filters" id="crewFilters"><button class="filter active" data-filter="all">Todos</button><button class="filter" data-filter="active">Ativos</button><button class="filter" data-filter="reserve">Reservas</button><button class="filter" data-filter="pre">Pré-timeskip</button><button class="filter" data-filter="post">Pós-timeskip</button></div>
+   <div class="crew-grid" id="crewGrid"></div>
+  </section>
+
+  <section class="view" id="view-recruit">
+   <div class="page-head"><div><div class="eyebrow">Taverna de recrutamento</div><h1>Novos companheiros</h1><p>Use Dials de recrutamento, conquistados jogando. Não há compra com dinheiro real.</p></div></div>
+   <div class="banner"><div class="eyebrow">Recrutamento especial · permanente</div><h2>O mundo inteiro pode se juntar a você.</h2><p>Personagens de todas as facções. Versões pré e pós-timeskip podem ser unidades distintas. Skins não aparecem no gacha.</p><div class="pull-actions"><button class="btn primary" id="pullOne">Invocar ×1 · 10 Dials</button><button class="btn" id="pullTen">Invocar ×10 · 90 Dials</button></div></div>
+   <div class="two-col"><div class="panel"><div class="panel-title"><h2>Taxas de recrutamento</h2><span class="eyebrow">Valores iniciais</span></div><div class="activity-list"><div class="activity"><div class="activity-icon">🟣</div><div><b>SSR · 5%</b><small>Personagens de destaque</small></div></div><div class="activity"><div class="activity-icon">🔵</div><div><b>SR · 20%</b><small>Aliados experientes</small></div></div><div class="activity"><div class="activity-icon">⚪</div><div><b>R · 35%</b><small>Tripulantes habilidosos</small></div></div><div class="activity"><div class="activity-icon">🟤</div><div><b>N · 40%</b><small>Personagens de apoio e coleção</small></div></div></div></div><div class="panel"><div class="panel-title"><h2>Garantias</h2><span class="eyebrow">Pity</span></div><p class="muted tiny" style="line-height:1.7">Contador de garantia é exibido aqui. Valores atuais são provisórios para teste e poderão ser ajustados: garantia SSR em 60 invocações; se perder o destaque de um banner futuro, o próximo SSR será garantido como destaque.</p><div class="statbox"><small>Invocações desde o último SSR</small><b id="pity">0 / 60</b></div><div class="progress"><span id="pityBar" style="width:0%"></span></div></div></div>
+   <div class="pull-result" id="pullResult">Sua próxima história pode começar com um novo aliado.</div>
+  </section>
+
+  <section class="view" id="view-expeditions">
+   <div class="page-head"><div><div class="eyebrow">Atividades paralelas</div><h1>Expedições</h1><p>Envie personagens para missões que avançam enquanto você joga ou está offline.</p></div></div>
+   <div class="two-col"><div class="panel"><div class="panel-title"><h2>Expedições disponíveis</h2><span class="eyebrow">Escolha uma</span></div><div id="expeditionList"></div></div><div class="panel"><div class="panel-title"><h2>Em andamento</h2><span class="eyebrow">Retorno automático</span></div><div id="activeExpeditions"><div class="empty">Nenhuma expedição em andamento.</div></div></div></div>
+  </section>
+
+  <section class="view" id="view-shop">
+   <div class="page-head"><div><div class="eyebrow">Aparências alternativas</div><h1>Loja de skins</h1><p>Skins são cosméticas. Todas são compradas com Berries conquistadas dentro do jogo — sem dinheiro real e sem gacha.</p></div><span class="gold tiny">Somente moeda do jogo</span></div>
+   <div class="shop-grid" id="skinGrid"></div>
+  </section>
+
+  <section class="view" id="view-upgrade">
+   <div class="page-head"><div><div class="eyebrow">Preparação da viagem</div><h1>Melhorias do navio</h1><p>Invista em instalações para acelerar sua renda, navegação e progresso.</p></div></div>
+   <div class="crew-grid" id="upgradeGrid"></div>
+  </section>
+  <div class="footer-note">Protótipo jogável · progresso salvo neste navegador · valores de economia ainda em balanceamento</div>
+ </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.floor(n).toLocaleString('pt-BR');
+const now=()=>Date.now();
+const islands=[
+ {id:0,name:'Foosha Village',region:'East Blue',emoji:'🏡',x:15,y:66,level:1,danger:'Baixo',reward:90,desc:'Um pequeno vilarejo costeiro. Um começo tranquilo para uma grande aventura.'},
+ {id:1,name:'Shells Town',region:'East Blue',emoji:'⚓',x:34,y:48,level:2,danger:'Baixo',reward:125,desc:'Uma cidade sob o controle de uma guarnição da Marinha.'},
+ {id:2,name:'Orange Town',region:'East Blue',emoji:'🎪',x:54,y:72,level:3,danger:'Moderado',reward:170,desc:'Uma cidade marcada por piratas saqueadores e surpresas.'},
+ {id:3,name:'Syrup Village',region:'East Blue',emoji:'🌳',x:76,y:55,level:4,danger:'Moderado',reward:220,desc:'Uma vila pacata cercada por colinas e mistérios.'},
+ {id:4,name:'Reverse Mountain',region:'Grand Line',emoji:'⛰️',x:85,y:23,level:6,danger:'Alto',reward:330,desc:'A entrada lendária para a Grand Line.'},
+ {id:5,name:'Whisky Peak',region:'Grand Line',emoji:'🌵',x:66,y:20,level:8,danger:'Alto',reward:440,desc:'Uma ilha que recebe piratas com hospitalidade suspeita.'},
+ {id:6,name:'Little Garden',region:'Grand Line',emoji:'🦕',x:45,y:30,level:11,danger:'Alto',reward:600,desc:'Uma ilha pré-histórica onde gigantes travam duelos.'},
+ {id:7,name:'Alabasta',region:'Grand Line',emoji:'🏜️',x:24,y:24,level:14,danger:'Muito alto',reward:850,desc:'Um reino desértico envolvido em uma crise nacional.'},
+ {id:8,name:'Water 7',region:'Grand Line',emoji:'🚂',x:18,y:88,level:19,danger:'Muito alto',reward:1200,desc:'A cidade das águas, famosa por seus carpinteiros navais.'},
+ {id:9,name:'Enies Lobby',region:'Grand Line',emoji:'🏛️',x:42,y:87,level:24,danger:'Extremo',reward:1650,desc:'Uma ilha judicial do Governo Mundial.'},
+ {id:10,name:'Marineford',region:'Novo Mundo',emoji:'⚔️',x:65,y:88,level:31,danger:'Extremo',reward:2400,desc:'O quartel-general da Marinha e palco de batalhas históricas.'},
+ {id:11,name:'Wano',region:'Novo Mundo',emoji:'🌸',x:86,y:77,level:40,danger:'Lendário',reward:3600,desc:'Um país fechado, de samurais e tradições antigas.'}
+];
+const charPool=[
+ {id:'luffy_pre',name:'Monkey D. Luffy',ver:'Pré-timeskip',rarity:'SR',role:'Atacante',emoji:'🍖',faction:'Piratas',power:28,buff:'Dano da equipe +3%',buffType:'damage'},
+ {id:'zoro_pre',name:'Roronoa Zoro',ver:'Pré-timeskip',rarity:'SR',role:'Atacante',emoji:'⚔️',faction:'Piratas',power:27,buff:'Ataque crítico +3%',buffType:'crit'},
+ {id:'nami_pre',name:'Nami',ver:'Pré-timeskip',rarity:'R',role:'Suporte',emoji:'🌩️',faction:'Piratas',power:15,buff:'Velocidade +3%',buffType:'speed'},
+ {id:'usopp_pre',name:'Usopp',ver:'Pré-timeskip',rarity:'R',role:'Controlador',emoji:'🎯',faction:'Piratas',power:14,buff:'Precisão +3%',buffType:'accuracy'},
+ {id:'sanji_pre',name:'Sanji',ver:'Pré-timeskip',rarity:'SR',role:'Atacante',emoji:'🍳',faction:'Piratas',power:25,buff:'Dano +3%',buffType:'damage'},
+ {id:'chopper_pre',name:'Tony Tony Chopper',ver:'Pré-timeskip',rarity:'R',role:'Curandeiro',emoji:'🦌',faction:'Piratas',power:14,buff:'Recuperação +4%',buffType:'heal'},
+ {id:'robin_pre',name:'Nico Robin',ver:'Pré-timeskip',rarity:'SR',role:'Controladora',emoji:'📚',faction:'Piratas',power:23,buff:'Controle +4%',buffType:'control'},
+ {id:'franky_pre',name:'Franky',ver:'Pré-timeskip',rarity:'R',role:'Tanque',emoji:'🤖',faction:'Piratas',power:17,buff:'Defesa +4%',buffType:'defense'},
+ {id:'brook_pre',name:'Brook',ver:'Pré-timeskip',rarity:'R',role:'Suporte',emoji:'🎻',faction:'Piratas',power:16,buff:'Energia +3%',buffType:'energy'},
+ {id:'smoker_pre',name:'Smoker',ver:'Pré-timeskip',rarity:'SSR',role:'Controlador',emoji:'💨',faction:'Marinha',power:37,buff:'Controle +5%',buffType:'control'},
+ {id:'tashigi_pre',name:'Tashigi',ver:'Pré-timeskip',rarity:'R',role:'Atacante',emoji:'🗡️',faction:'Marinha',power:16,buff:'Crítico +2%',buffType:'crit'},
+ {id:'luffy_post',name:'Monkey D. Luffy',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'👒',faction:'Piratas',power:45,buff:'Dano da equipe +5%',buffType:'damage'},
+ {id:'zoro_post',name:'Roronoa Zoro',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🗡️',faction:'Piratas',power:43,buff:'Crítico +5%',buffType:'crit'},
+ {id:'nami_post',name:'Nami',ver:'Pós-timeskip',rarity:'SR',role:'Suporte',emoji:'⚡',faction:'Piratas',power:27,buff:'Velocidade +4%',buffType:'speed'},
+ {id:'sanji_post',name:'Sanji',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🔥',faction:'Piratas',power:42,buff:'Dano +5%',buffType:'damage'},
+ {id:'jinbe_post',name:'Jinbe',ver:'Pós-timeskip',rarity:'SSR',role:'Tanque',emoji:'🌊',faction:'Piratas',power:40,buff:'Defesa +6%',buffType:'defense'},
+ {id:'smoker_post',name:'Smoker',ver:'Pós-timeskip',rarity:'SR',role:'Controlador',emoji:'💨',faction:'Marinha',power:30,buff:'Controle +4%',buffType:'control'},
+ {id:'law_post',name:'Trafalgar Law',ver:'Pós-timeskip',rarity:'SSR',role:'Controlador',emoji:'🩺',faction:'Piratas',power:44,buff:'Energia +5%',buffType:'energy'},
+ {id:'hancock_post',name:'Boa Hancock',ver:'Pós-timeskip',rarity:'SSR',role:'Controladora',emoji:'🐍',faction:'Piratas Kuja',power:42,buff:'Controle +5%',buffType:'control'},
+ {id:'katakuri',name:'Charlotte Katakuri',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🍩',faction:'Piratas da Big Mom',power:48,buff:'Dano +6%',buffType:'damage'},
+ {id:'doflamingo',name:'Donquixote Doflamingo',ver:'Pós-timeskip',rarity:'SSR',role:'Controlador',emoji:'🦩',faction:'Piratas',power:47,buff:'Controle +6%',buffType:'control'},
+ {id:'crocodile',name:'Crocodile',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🐊',faction:'Cross Guild',power:43,buff:'Dano +5%',buffType:'damage'},
+ {id:'mihawk',name:'Dracule Mihawk',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🦅',faction:'Cross Guild',power:49,buff:'Crítico +6%',buffType:'crit'},
+ {id:'shanks',name:'Shanks',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🍷',faction:'Piratas do Ruivo',power:50,buff:'Dano +6%',buffType:'damage'},
+ {id:'koby',name:'Koby',ver:'Pós-timeskip',rarity:'SR',role:'Suporte',emoji:'🫡',faction:'Marinha',power:29,buff:'Velocidade +4%',buffType:'speed'},
+ {id:'garp',name:'Monkey D. Garp',ver:'Pós-timeskip',rarity:'SSR',role:'Tanque',emoji:'👊',faction:'Marinha',power:48,buff:'Defesa +6%',buffType:'defense'},
+ {id:'sabo',name:'Sabo',ver:'Pós-timeskip',rarity:'SSR',role:'Atacante',emoji:'🔥',faction:'Revolucionários',power:46,buff:'Dano +6%',buffType:'damage'},
+ {id:'buggy',name:'Buggy',ver:'Pré-timeskip',rarity:'N',role:'Controlador',emoji:'🤡',faction:'Piratas',power:9,buff:'Sorte +1%',buffType:'accuracy'},
+ {id:'alvida',name:'Alvida',ver:'Pré-timeskip',rarity:'N',role:'Tanque',emoji:'🪓',faction:'Piratas',power:8,buff:'Defesa +1%',buffType:'defense'},
+ {id:'kuro',name:'Kuro',ver:'Pré-timeskip',rarity:'N',role:'Atacante',emoji:'🐈‍⬛',faction:'Piratas',power:9,buff:'Velocidade +1%',buffType:'speed'},
+ {id:'krieg',name:'Don Krieg',ver:'Pré-timeskip',rarity:'N',role:'Tanque',emoji:'🛡️',faction:'Piratas',power:8,buff:'Defesa +1%',buffType:'defense'},
+ {id:'arlong',name:'Arlong',ver:'Pré-timeskip',rarity:'N',role:'Atacante',emoji:'🦈',faction:'Piratas',power:10,buff:'Dano +1%',buffType:'damage'},
+ {id:'helmeppo',name:'Helmeppo',ver:'Pré-timeskip',rarity:'N',role:'Suporte',emoji:'🎖️',faction:'Marinha',power:7,buff:'Energia +1%',buffType:'energy'},
+ {id:'morgan',name:'Morgan',ver:'Pré-timeskip',rarity:'N',role:'Tanque',emoji:'🪓',faction:'Marinha',power:8,buff:'Defesa +1%',buffType:'defense'},
+ {id:'wapol',name:'Wapol',ver:'Pré-timeskip',rarity:'N',role:'Tanque',emoji:'👑',faction:'Reino de Drum',power:8,buff:'Defesa +1%',buffType:'defense'}
+];
+const skinData=[
+ {id:'luffy_red',name:'Luffy · traje vermelho',char:'luffy_post',emoji:'🧥',price:1800,desc:'Uma variação de roupa para o capitão.'},
+ {id:'zoro_black',name:'Zoro · traje escuro',char:'zoro_post',emoji:'🖤',price:1800,desc:'Aparência alternativa do espadachim.'},
+ {id:'smoker_casual',name:'Smoker · visual alternativo',char:'smoker_post',emoji:'🧣',price:2200,desc:'Uma roupa alternativa para Smoker.'},
+ {id:'katakuri_event',name:'Katakuri · traje especial',char:'katakuri',emoji:'✨',price:3000,desc:'Visual especial. Não altera atributos.'},
+ {id:'hancock_event',name:'Hancock · traje especial',char:'hancock_post',emoji:'👑',price:2600,desc:'Visual especial. Não altera atributos.'}
+];
+const expeditionData=[
+ {id:'supply',name:'Suprimentos da costa',time:90,reward:{berries:450,materials:2},desc:'Uma busca rápida por recursos básicos.'},
+ {id:'treasure',name:'Caça ao tesouro',time:240,reward:{berries:1100,dials:12},desc:'Uma rota arriscada em busca de tesouros.'},
+ {id:'relic',name:'Ruínas esquecidas',time:420,reward:{berries:1700,materials:5,dials:18},desc:'Uma expedição longa com recompensas raras.'}
+];
+const defaultState=()=>({
+ berries:2500,dials:120,materials:12,level:1,xp:0,wins:0,unlocked:1,currentIsland:0,selectedIsland:0,
+ characters:[{id:'luffy_pre',level:1,xp:0,dupes:0,skin:null},{id:'zoro_pre',level:1,xp:0,dupes:0,skin:null},{id:'nami_pre',level:1,xp:0,dupes:0,skin:null},{id:'usopp_pre',level:1,xp:0,dupes:0,skin:null},{id:'chopper_pre',level:1,xp:0,dupes:0,skin:null}],
+ active:['luffy_pre','zoro_pre','nami_pre','usopp_pre','chopper_pre'],reserves:[],pity:0,ownedSkins:[],expeditions:[],
+ upgrades:{ship:1,galley:1,lookout:1},last:now(),enemyHp:0,enemyMax:0,logs:['Sua aventura começou em Foosha Village.']
+});
+let s=defaultState(),currentFilter='all',selectMode=false,toastTimer;
+function log(t){s.logs.unshift(t);s.logs=s.logs.slice(0,10)}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function save(){s.last=now();localStorage.setItem('infiniteSeasSaveV2',JSON.stringify(s))}
+function load(){
+ try{let v=JSON.parse(localStorage.getItem('infiniteSeasSaveV2'));if(v){s={...defaultState(),...v};s.upgrades={...defaultState().upgrades,...(v.upgrades||{})}}}catch(e){}
+ const elapsed=Math.min(8*3600,Math.max(0,(now()-s.last)/1000));
+ if(elapsed>3){const idle=Math.floor(elapsed*(1+s.upgrades.galley*.7));s.berries+=idle;log(`Enquanto você esteve fora, a cozinha e a tripulação produziram ${fmt(idle)} Berries.`)}
+ resolveExpeditions();if(!s.enemyMax||!s.enemyHp){resetEnemy()}
+}
+function character(id){return charPool.find(c=>c.id===id)}
+function owned(id){return s.characters.find(c=>c.id===id)}
+function getPower(id){let c=character(id),o=owned(id);return c&&o?Math.floor(c.power*o.level):0}
+function activePower(){return s.active.reduce((n,id)=>n+getPower(id),0)}
+function reserveBuff(){let total={damage:0,crit:0,speed:0,accuracy:0,heal:0,control:0,defense:0,energy:0};s.reserves.forEach(id=>{let c=character(id);if(c&&total[c.buffType]!==undefined)total[c.buffType]+=parseInt((c.buff.match(/\+(\d+)/)||[])[1]||0)});return total}
+function totalPower(){let b=reserveBuff();return Math.floor((activePower()+s.upgrades.ship*8)*(1+(b.damage+b.crit*.4+b.defense*.25+b.speed*.25+b.energy*.2)/100))}
+function income(){return 1+s.upgrades.galley*.7+s.upgrades.lookout*.45}
+function xpNeed(level){return 100+level*65}
+function addXP(amount){s.xp+=amount;while(s.xp>=xpNeed(s.level)){s.xp-=xpNeed(s.level);s.level++;s.dials+=8;log(`Nível de capitão ${s.level}! Você recebeu 8 Dials.`)}}
+function resetEnemy(){let isl=islands[s.currentIsland],max=Math.floor((70+isl.level*45)*(1+s.wins*.08));s.enemyMax=max;s.enemyHp=max;renderBattle()}
+function enemyName(){return ['Bando de saqueadores','Caçadores de recompensa','Patrulha da Marinha','Piratas rivais','Agentes do Governo'][s.wins%5]}
+function defeatEnemy(){
+ let reward=islands[s.currentIsland].reward+Math.floor(s.enemyMax*.5);
+ s.berries+=reward;s.wins++;if(s.wins%3===0&&s.unlocked<islands.length){s.unlocked=Math.min(islands.length,Math.max(s.unlocked,s.currentIsland+2));log(`Nova ilha descoberta: ${islands[s.unlocked-1].name}!`)}addXP(25+islands[s.currentIsland].level*4);
+ s.materials+=1+(s.wins%5===0?2:0);s.dials+=5+(s.wins%5===0?10:0);
+ s.characters.forEach(o=>{if(s.active.includes(o.id)){o.xp+=12;let c=character(o.id);if(o.xp>=100+o.level*55){o.xp=0;o.level++;log(`${c.name} subiu para o nível ${o.level}.`)}}});
+ log(`Vitória em ${islands[s.currentIsland].name}: +${fmt(reward)} Berries.`);
+ s.enemyMax=Math.floor(s.enemyMax*1.12+10);s.enemyHp=s.enemyMax;renderAll();
+}
+function damageTick(){
+ if(!s.active.length)return;
+ let b=reserveBuff();let damage=Math.max(1,Math.floor(totalPower()*.075*(1+b.speed*.006)));
+ s.enemyHp-=damage;
+ if(s.enemyHp<=0)defeatEnemy();else renderBattle();
+}
+function renderResources(){
+ $('berries').textContent=fmt(s.berries);$('dials').textContent=fmt(s.dials);$('captainLevel').textContent=s.level;
+ $('homeRegion').textContent=islands[s.currentIsland].region;$('islandsFound').textContent=`${s.unlocked} / ${islands.length}`;
+ $('teamPower').textContent=fmt(totalPower());$('wins').textContent=fmt(s.wins);$('shipLocation').textContent=`Navegando por ${islands[s.currentIsland].region}`;
+ $('homeLog').innerHTML=s.logs.slice(0,3).map(t=>`<div class="activity"><div class="activity-icon">📜</div><div><b>${escapeHTML(t)}</b><small>Diário de bordo</small></div></div>`).join('');
+}
+function escapeHTML(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderMap(){
+ const board=$('mapBoard');board.querySelectorAll('.island-node,.route-line').forEach(x=>x.remove());
+ islands.forEach((isl,i)=>{
+  if(i>0){let prev=islands[i-1],dx=(isl.x-prev.x),dy=(isl.y-prev.y),len=Math.hypot(dx*3.4,dy*2.6),angle=Math.atan2(dy,dx)*180/Math.PI;let line=document.createElement('div');line.className='route-line';line.style.left=prev.x+'%';line.style.top=prev.y+'%';line.style.width=len+'px';line.style.transform=`rotate(${angle}deg)`;board.appendChild(line)}
+  let btn=document.createElement('button');btn.className='island-node'+(i>=s.unlocked?' locked':'')+(i===s.selectedIsland?' selected':'');btn.style.left=isl.x+'%';btn.style.top=isl.y+'%';btn.disabled=i>=s.unlocked;btn.innerHTML=`<span class="land">${isl.emoji}</span><b>${isl.name}</b>`;btn.onclick=()=>{s.selectedIsland=i;renderMap()};board.appendChild(btn)
+ });
+ const isl=islands[s.selectedIsland];$('islandDetail').innerHTML=`<div class="island-illustration">${isl.emoji}</div><div class="eyebrow">${isl.region} · Ilha ${isl.id+1}</div><h3>${isl.name}</h3><p class="muted tiny">${isl.desc}</p><div class="progress"><span style="width:${Math.min(100,s.wins/(3+isl.level*.3)*100)}%"></span></div><p class="tiny muted">Perigo: ${isl.danger} · Nível recomendado: ${isl.level}<br>Recompensa base: ${fmt(isl.reward)} Berries</p><button class="btn primary" id="travelBtn">${s.currentIsland===isl.id?'Você está aqui':'Navegar até aqui'}</button>`;
+ $('travelBtn').onclick=()=>travel(isl.id);
+}
+function travel(id){
+ if(id>=s.unlocked)return toast('Esta ilha ainda não foi descoberta.');
+ s.currentIsland=id;s.selectedIsland=id;resetEnemy();log(`O navio chegou a ${islands[id].name}.`);renderAll();toast(`Chegamos a ${islands[id].name}!`);showView('battle');
+}
+function renderBattle(){
+ const isl=islands[s.currentIsland];$('battleLocation').textContent=isl.name;$('enemyName').textContent=enemyName();$('enemyTitle').textContent=enemyName();$('enemySub').textContent=`Ameaça de nível ${isl.level} · Região: ${isl.region}`;$('enemyLevel').textContent='AMEAÇA '+isl.danger.toUpperCase();$('enemyIcon').textContent=['🏴‍☠️','🎯','⚓','💀','🛡️'][s.wins%5];$('enemyHp').textContent=`${fmt(Math.max(0,s.enemyHp))} / ${fmt(s.enemyMax)}`;$('enemyBar').style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+'%';$('battleStatus').textContent=`Dano automático: ${fmt(totalPower()*.075)} por segundo`;$('activeSlots').innerHTML=slotHTML(s.active);$('reserveSlots').innerHTML=slotHTML(s.reserves,true);
+}
+function slotHTML(ids,reserve=false){return Array.from({length:5},(_,i)=>{let c=character(ids[i]);return `<div class="slot ${c?'filled':''}">${c?`<div class="slot-avatar">${c.emoji}</div><b>${c.name.split(' ')[0]}</b><small>${reserve?c.buff:c.role}</small>`:`<div class="slot-avatar">＋</div><b>Vazio</b><small>${reserve?'Reserva':'Ativo'}</small>`}</div>`}).join('')}
+function renderCrew(){
+ $('crewActiveSlots').innerHTML=slotHTML(s.active);$('crewReserveSlots').innerHTML=slotHTML(s.reserves,true);
+ let list=s.characters.map(o=>({...character(o.id),owned:o})).filter(c=>c.id);
+ if(currentFilter==='active')list=list.filter(c=>s.active.includes(c.id));if(currentFilter==='reserve')list=list.filter(c=>s.reserves.includes(c.id));if(currentFilter==='pre')list=list.filter(c=>c.ver==='Pré-timeskip');if(currentFilter==='post')list=list.filter(c=>c.ver==='Pós-timeskip');
+ $('crewGrid').innerHTML=list.map(c=>`<article class="char-card"><div class="char-top"><div class="char-avatar">${c.emoji}</div><div><div class="rarity">${c.rarity} · ${c.faction}</div><div class="char-name">${c.name}</div><div class="char-role">${c.ver} · ${c.role}</div></div></div><div class="char-stats"><span>⚔️ Poder ${fmt(getPower(c.id))}</span><span>Nv. ${c.owned.level}</span></div><div class="progress"><span style="width:${Math.min(100,c.owned.xp/(100+c.owned.level*55)*100)}%"></span></div><div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-level="${c.id}">Treinar · ${fmt(120*c.owned.level)} ฿</button><button class="btn small ghost" data-slot="${c.id}">${s.active.includes(c.id)?'Ativo':s.reserves.includes(c.id)?'Reserva':'Adicionar'}</button></div><div class="tiny muted" style="margin-top:8px">Buff de reserva: ${c.buff}</div></article>`).join('')||'<div class="empty">Nenhum personagem nesta categoria.</div>';
+ document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>train(b.dataset.level));document.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>toggleSlot(b.dataset.slot));
+}
+function train(id){let o=owned(id),cost=120*o.level;if(s.berries<cost)return toast('Berries insuficientes.');s.berries-=cost;o.level++;log(`${character(id).name} treinou até o nível ${o.level}.`);renderAll();toast('Treinamento concluído.')}
+function toggleSlot(id){
+ let ai=s.active.indexOf(id),ri=s.reserves.indexOf(id);
+ if(ai>=0){s.active.splice(ai,1);if(s.reserves.length<5)s.reserves.push(id)}
+ else if(ri>=0){s.reserves.splice(ri,1);if(s.active.length<5)s.active.push(id)}
+ else if(s.active.length<5)s.active.push(id);else if(s.reserves.length<5)s.reserves.push(id);else return toast('Os dez espaços já estão ocupados.');
+ renderAll();toast('Formação atualizada.');
+}
+function rollRarity(){let r=Math.random()*100;return r<5?'SSR':r<25?'SR':r<60?'R':'N'}
+function pull(count){
+ let cost=count===10?90:10;if(s.dials<cost)return toast('Dials insuficientes. Continue explorando para ganhar mais.');
+ s.dials-=cost;let results=[];
+ for(let i=0;i<count;i++){
+  s.pity++;let rarity=s.pity>=60?'SSR':rollRarity();if(rarity==='SSR')s.pity=0;
+  let pool=charPool.filter(c=>c.rarity===rarity);if(!pool.length)pool=charPool.filter(c=>c.rarity==='R');
+  let pick=pool[Math.floor(Math.random()*pool.length)],o=owned(pick.id);
+  if(o){o.dupes++;if(o.dupes>=3){s.materials+=3;o.dupes=3;results.push(`${pick.name} repetido → +3 materiais`)}else results.push(`${pick.name} · duplicata ${o.dupes}/3`)}
+  else{s.characters.push({id:pick.id,level:1,xp:0,dupes:0,skin:null});results.push(`${pick.name} (${pick.ver}) · ${rarity}`)}
+ }
+ $('pullResult').innerHTML=results.map(x=>`<div>✦ ${escapeHTML(x)}</div>`).join('');renderAll();toast(`${count} recrutamento(s) concluído(s).`);
+}
+function renderExpeditions(){
+ $('expeditionList').innerHTML=expeditionData.map(e=>`<div class="expedition"><div class="exp-head"><b>${e.name}</b><span class="gold tiny">${Math.ceil(e.time/60)} min</span></div><p class="muted tiny">${e.desc}</p><div class="tiny muted">Recompensas: ${fmt(e.reward.berries)} Berries${e.reward.dials?` · ${e.reward.dials} Dials`:''}${e.reward.materials?` · ${e.reward.materials} materiais`:''}</div><button class="btn small" data-exp="${e.id}" ${s.expeditions.length>=3?'disabled':''}>Enviar expedição</button></div>`).join('');
+ document.querySelectorAll('[data-exp]').forEach(b=>b.onclick=()=>startExp(b.dataset.exp));
+ $('activeExpeditions').innerHTML=s.expeditions.map(e=>{let left=Math.max(0,Math.ceil((e.ends-now())/1000));return `<div class="expedition"><div class="exp-head"><b>${e.name}</b><span class="gold tiny">${left>0?`${Math.floor(left/60)}m ${left%60}s`:'Concluída'}</span></div><div class="progress"><span style="width:${Math.min(100,100-(left/e.duration*100))}%"></span></div><small class="muted">Retorno automático ao concluir.</small></div>`}).join('')||'<div class="empty">Nenhuma expedição em andamento.</div>';
+}
+function startExp(id){if(s.expeditions.length>=3)return toast('Limite de três expedições simultâneas.');let e=expeditionData.find(x=>x.id===id);s.expeditions.push({id:e.id,name:e.name,ends:now()+e.time*1000,duration:e.time*1000,reward:e.reward});log(`Expedição iniciada: ${e.name}.`);renderExpeditions();toast('Expedição enviada!')}
+function resolveExpeditions(){let keep=[];s.expeditions.forEach(e=>{if(e.ends<=now()){s.berries+=e.reward.berries||0;s.dials+=e.reward.dials||0;s.materials+=e.reward.materials||0;log(`Expedição concluída: ${e.name}. Recompensas recolhidas.`)}else keep.push(e)});s.expeditions=keep}
+function renderShop(){
+ $('skinGrid').innerHTML=skinData.map(k=>{let bought=s.ownedSkins.includes(k.id);return `<div class="skin-card"><div class="skin-preview">${k.emoji}</div><div class="rarity">SKIN COSMÉTICA</div><h3>${k.name}</h3><p>${k.desc}</p><button class="btn small ${bought?'':'primary'}" data-skin="${k.id}" ${bought?'disabled':''}>${bought?'Adquirida':`Comprar · ${fmt(k.price)} ฿`}</button></div>`}).join('');
+ document.querySelectorAll('[data-skin]').forEach(b=>b.onclick=()=>buySkin(b.dataset.skin));
+}
+function buySkin(id){let k=skinData.find(x=>x.id===id);if(s.berries<k.price)return toast('Berries insuficientes.');s.berries-=k.price;s.ownedSkins.push(id);log(`Skin adquirida: ${k.name}.`);renderAll();toast('Skin comprada! Aparência, sem bônus de atributos.')}
+function renderUpgrades(){
+ const items=[{id:'galley',name:'Cozinha do navio',emoji:'🍲',desc:'Aumenta a produção passiva de Berries.',base:500},{id:'lookout',name:'Posto de vigia',emoji:'🔭',desc:'Melhora a eficiência das rotas e a renda passiva.',base:750},{id:'ship',name:'Casco reforçado',emoji:'🚢',desc:'Aumenta o poder de combate global da tripulação.',base:1000}];
+ $('upgradeGrid').innerHTML=items.map(i=>{let lvl=s.upgrades[i.id],cost=i.base*lvl;return `<div class="char-card"><div class="char-avatar">${i.emoji}</div><div class="rarity">MELHORIA DE NAVIO</div><div class="char-name">${i.name}</div><p class="muted tiny">${i.desc}</p><div class="char-stats"><span>Nível ${lvl}</span><span>Próximo: ${fmt(cost)} ฿</span></div><button class="btn small primary" data-upgrade="${i.id}">Melhorar</button></div>`}).join('');
+ document.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>upgrade(b.dataset.upgrade));
+}
+function upgrade(id){let base={galley:500,lookout:750,ship:1000}[id],cost=base*s.upgrades[id];if(s.berries<cost)return toast('Berries insuficientes.');s.berries-=cost;s.upgrades[id]++;log(`Melhoria concluída: ${id}.`);renderAll();toast('Navio melhorado!')}
+function renderRecruit(){$('pity').textContent=`${s.pity} / 60`;$('pityBar').style.width=(s.pity/60*100)+'%'}
+function renderAll(){renderResources();renderMap();renderBattle();renderCrew();renderExpeditions();renderShop();renderUpgrades();renderRecruit();save()}
+function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='world')renderMap();if(name==='crew')renderCrew();if(name==='battle')renderBattle()}
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>showView(b.dataset.go));
+$('attackBtn').onclick=()=>{s.enemyHp-=Math.max(1,Math.floor(totalPower()*.7));if(s.enemyHp<=0)defeatEnemy();else renderBattle()};
+$('pullOne').onclick=()=>pull(1);$('pullTen').onclick=()=>pull(10);
+$('formationBtn').onclick=()=>toast('Use os botões nos cartões para alternar ativos e reservas.');
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderCrew()});
+load();renderAll();setInterval(()=>{s.berries+=income();damageTick();resolveExpeditions();renderResources();renderRecruit();renderExpeditions();save()},1000);
+window.addEventListener('beforeunload',save);
+})();
+</script>
+</body>
+</html>
