@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One Piece: Infinite Seas</title>
+<style>
+:root{--bg:#081522;--panel:#102538;--panel2:#16334a;--gold:#f6c453;--text:#edf6ff;--muted:#9bb2c5;--green:#63d69b;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173b54,#081522 65%);color:var(--text);font:15px system-ui,Segoe UI,sans-serif}
+header{padding:22px max(18px,calc((100% - 1100px)/2));background:linear-gradient(90deg,#0b1c2cdd,#153b54dd);border-bottom:1px solid #ffffff1c;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}
+h1{margin:0;font-size:clamp(22px,4vw,32px);letter-spacing:.5px}header p{margin:4px 0 0;color:var(--muted)}
+main{max-width:1100px;margin:auto;padding:18px;display:grid;gap:15px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat,.panel{background:linear-gradient(145deg,var(--panel),#0d2030);border:1px solid #ffffff18;border-radius:15px;padding:15px;box-shadow:0 8px 24px #0002}
+.stat small{display:block;color:var(--muted)}.stat b{font-size:22px;color:var(--gold)}
+nav{display:flex;gap:8px;flex-wrap:wrap}.tab,button{border:1px solid #ffffff20;background:#1b3b52;color:var(--text);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:650}.tab.active,button.primary{background:var(--gold);color:#17202a;border-color:var(--gold)}button:disabled{opacity:.4;cursor:not-allowed}
+.panel h2{margin:0 0 12px;font-size:20px}.muted{color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.card{background:linear-gradient(145deg,var(--panel2),#10283b);border:1px solid #ffffff19;border-radius:13px;padding:13px;min-width:0}.card h3{margin:0 0 4px}.portrait{font-size:38px;float:right;margin-left:8px}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);font-weight:800}
+.bar{height:9px;background:#07131e;border-radius:99px;overflow:hidden;margin:8px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#42c78c,#a5f2b8);border-radius:99px}
+.log{max-height:170px;overflow:auto;font-size:13px;color:var(--muted);line-height:1.65}.log div{border-bottom:1px solid #ffffff0c;padding:3px 0}
+.hidden{display:none}.big{font-size:27px;color:var(--gold);font-weight:800}.island{background:linear-gradient(120deg,#1d5360,#173448);border-radius:14px;padding:16px;border:1px solid #ffffff20}
+footer{text-align:center;color:var(--muted);padding:5px 0 20px;font-size:12px}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}header{position:static}.stat b{font-size:19px}}
+</style></head>
+<body>
+<header><h1>☠️ ONE PIECE: INFINITE SEAS</h1><p>Monte sua tripulação. Conquiste os mares. Construa seu império pirata.</p></header>
+<main>
+<section class="stats">
+ <div class="stat"><small>💰 Berries</small><b id="berries">0</b></div>
+ <div class="stat"><small>⚔️ Poder da tripulação</small><b id="power">0</b></div>
+ <div class="stat"><small>🌊 Ilha atual</small><b id="island">East Blue</b></div>
+ <div class="stat"><small>🚢 Frota</small><b id="fleet">1 navio</b></div>
+</section>
+<nav>
+<button class="tab active" data-tab="adventure">⚔️ Aventura</button><button class="tab" data-tab="crew">🏴‍☠️ Tripulação</button><button class="tab" data-tab="gacha">✨ Recrutamento</button><button class="tab" data-tab="empire">🏝️ Império</button>
+</nav>
+<section id="adventure" class="panel">
+ <div class="row"><div><div class="tag">Batalha automática</div><h2 id="enemyName">Bandido do Mar</h2><div class="muted" id="enemyInfo">Uma ameaça está bloqueando sua rota.</div></div><div class="big" id="enemyHp">100 HP</div></div>
+ <div class="bar"><span id="enemyBar" style="width:100%"></span></div>
+ <div class="row"><div><b id="battleStatus">Sua tripulação está pronta!</b><div class="muted" id="battleHint">A cada segundo, sua equipe causa dano automaticamente.</div></div><button class="primary" id="attackBtn">⚔️ Atacar agora</button></div>
+ <div class="row" style="margin-top:15px"><button id="nextIsland">Explorar próxima ilha →</button><span class="muted" id="progressText">Vitórias: 0</span></div>
+</section>
+<section id="crew" class="panel hidden"><div class="row"><div><div class="tag">Seus companheiros</div><h2>Tripulação atual</h2></div><span class="muted" id="crewCount">0 personagens</span></div><div id="crewList" class="grid"></div></section>
+<section id="gacha" class="panel hidden"><div class="tag">Taverna de recrutamento</div><h2>Encontre novos aliados</h2><p class="muted">Recrute personagens aleatórios. Quanto maior a raridade, mais poder e habilidades eles trazem.</p><div class="grid">
+<div class="card"><div class="portrait">🍖</div><h3>Recrutamento comum</h3><p class="muted">Custa 500 berries · garantido personagem</p><button class="primary" id="pull1">Recrutar ×1</button></div>
+<div class="card"><div class="portrait">💎</div><h3>Recrutamento especial</h3><p class="muted">Custa 4.500 berries · 10 tentativas</p><button id="pull10">Recrutar ×10</button></div></div><p id="pullResult" class="muted" aria-live="polite">Dica: avance nas ilhas para ganhar berries mais rápido.</p><div class="muted">Chances: Comum 45% · Raro 30% · Épico 17% · Lendário 7% · Mítico 1%</div></section>
+<section id="empire" class="panel hidden"><div class="tag">Tycoon pirata</div><h2>Seu império nos mares</h2><div class="island"><div class="row"><div><h3>🏝️ Base pirata</h3><div class="muted">Sua ilha produz berries mesmo quando você está longe.</div></div><div class="big" id="income">+1/s</div></div></div><div class="grid" style="margin-top:12px">
+<div class="card"><div class="portrait">🏦</div><h3>Mercado negro</h3><p class="muted">Aumenta a renda passiva em +2 berries/s.</p><b id="marketLevel">Nível 1</b><p><button id="upgradeMarket">Melhorar · 800 ฿</button></p></div>
+<div class="card"><div class="portrait">⚓</div><h3>Estaleiro</h3><p class="muted">Constrói navios que aumentam sua renda e poder global.</p><b id="shipLevel">1 navio</b><p><button id="buildShip">Construir · 2.000 ฿</button></p></div>
+<div class="card"><div class="portrait">🗺️</div><h3>Mapa de rotas</h3><p class="muted">Rotas comerciais mais seguras e lucrativas.</p><b id="routeLevel">Nível 0</b><p><button id="upgradeRoute">Melhorar · 1.500 ฿</button></p></div></div>
+</section>
+<section class="panel"><div class="row"><h2>📜 Diário de bordo</h2><button id="saveBtn">Salvar agora</button></div><div class="log" id="log"></div></section>
+<footer>Jogo de fã não oficial. Progresso salvo neste navegador. Feche e volte quando quiser.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const names=[
+["Luffy","🍖","Capitão"],["Zoro","⚔️","Espadachim"],["Nami","🌩️","Navegadora"],["Usopp","🎯","Atirador"],["Sanji","🍳","Cozinheiro"],["Chopper","🦌","Médico"],["Robin","📚","Arqueóloga"],["Franky","🤖","Engenheiro"],["Brook","🎻","Músico"],["Jinbe","🌊","Timoneiro"],["Smoker","💨","Marinha"],["Tashigi","🗡️","Espadachim"],["Crocodile","🦂","Shichibukai"],["Doflamingo","🕶️","Pirata"],["Katakuri","🍩","Comandante"],["Boa Hancock","🐍","Imperatriz"],["Mihawk","🦅","Espadachim"],["Shanks","🍷","Yonkou"],["Kaido","🐉","Yonkou"],["白ひげ","🌋","Lenda"]];
+const rarity=[["Comum",1,45],["Raro",2.2,30],["Épico",5,17],["Lendário",12,7],["Mítico",30,1]];
+const islands=["East Blue","Alabasta","Water 7","Enies Lobby","Thriller Bark","Marineford","Dressrosa","Whole Cake","Wano","Egghead"];
+let s={berries:1800,crew:[{name:"Luffy",emoji:"🍖",role:"Capitão",rarity:"Raro",level:1,power:22}],island:0,wins:0,enemyHp:100,enemyMax:100,market:1,ships:1,routes:0,last:Date.now(),logs:[]};
+function log(t){s.logs.unshift(t);s.logs=s.logs.slice(0,30);$("log").innerHTML=s.logs.map(x=>`<div>• ${x}</div>`).join("")}
+function fmt(n){return Math.floor(n).toLocaleString("pt-BR")}
+function power(){return s.crew.reduce((a,c)=>a+c.power*c.level,0)+s.ships*12}
+function income(){return s.market*2+s.ships*3+s.routes*5}
+function save(){s.last=Date.now();localStorage.setItem("infiniteSeasSave",JSON.stringify(s));log("Progresso salvo no navegador.")}
+function load(){try{let v=JSON.parse(localStorage.getItem("infiniteSeasSave"));if(v){s={...s,...v};let away=Math.min(8*3600,Math.max(0,(Date.now()-s.last)/1000));let earned=away*income();s.berries+=earned;if(earned>1)log(`Enquanto você esteve fora, sua base produziu ${fmt(earned)} berries.`)}}catch(e){}}
+function enemy(){let base=100*Math.pow(1.42,s.island)+s.wins*12;s.enemyMax=Math.floor(base);s.enemyHp=s.enemyMax;$("enemyName").textContent=["Bandido do Mar","Capitão Pirata","Agente do Governo","Caçador de Recompensas","Oficial da Marinha"][s.wins%5];$("enemyInfo").textContent=`Recompensa: ${fmt(80+base*.8)} berries · Região: ${islands[s.island]}`;render()}
+function hurt(d){s.enemyHp-=d;if(s.enemyHp<=0){let reward=80+s.enemyMax*.8;s.berries+=reward;s.wins++;log(`Vitória! Você ganhou ${fmt(reward)} berries.`);enemy()}else render()}
+function roll(){let r=Math.random()*100,acc=0;for(let x of rarity){acc+=x[2];if(r<=acc)return x}return rarity[0]}
+function recruit(){let x=roll(),pool=names.filter(n=>x[0]==="Mítico"?["Katakuri","Shanks","Kaido","白ひげ","Mihawk"].includes(n[0]):x[0]==="Lendário"?["Crocodile","Doflamingo","Boa Hancock","Smoker","Jinbe","Robin"].includes(n[0]):true);let n=pool[Math.floor(Math.random()*pool.length)];let existing=s.crew.find(c=>c.name===n[0]);if(existing){existing.level++;existing.power+=Math.ceil(5*x[1]);log(`${n[0]} repetido! Nível aumentado para ${existing.level}.`)}else{s.crew.push({name:n[0],emoji:n[1],role:n[2],rarity:x[0],level:1,power:Math.ceil(10*x[1])});log(`${n[0]} entrou para a tripulação! (${x[0]})`)}return `${n[1]} ${n[0]} — ${x[0]}`}
+function render(){
+$("berries").textContent=fmt(s.berries);$("power").textContent=fmt(power());$("island").textContent=islands[s.island];$("fleet").textContent=s.ships+" navio(s)";
+$("enemyHp").textContent=fmt(Math.max(0,s.enemyHp))+" / "+fmt(s.enemyMax)+" HP";$("enemyBar").style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+"%";$("progressText").textContent="Vitórias: "+s.wins;
+$("crewCount").textContent=s.crew.length+" personagens";$("crewList").innerHTML=s.crew.map(c=>`<div class="card"><div class="portrait">${names.find(n=>n[0]===c.name)?.[1]||"🏴‍☠️"}</div><div class="tag">${c.rarity}</div><h3>${c.name}</h3><div class="muted">${c.role||"Aliado"} · Nível ${c.level}</div><p>⚔️ Poder: ${fmt(c.power*c.level)}</p><button data-train="${c.name}">Treinar · ${fmt(100*c.level)} ฿</button></div>`).join("");
+$("income").textContent="+"+income()+"/s";$("marketLevel").textContent="Nível "+s.market;$("shipLevel").textContent=s.ships+" navio(s)";$("routeLevel").textContent="Nível "+s.routes;
+$("upgradeMarket").textContent=`Melhorar · ${fmt(800*s.market)} ฿`;$("buildShip").textContent=`Construir · ${fmt(2000*s.ships)} ฿`;$("upgradeRoute").textContent=`Melhorar · ${fmt(1500*(s.routes+1))} ฿`;
+document.querySelectorAll("[data-train]").forEach(b=>b.onclick=()=>{let c=s.crew.find(x=>x.name===b.dataset.train),cost=100*c.level;if(s.berries>=cost){s.berries-=cost;c.level++;c.power+=5;log(`${c.name} treinou e ficou mais forte.`);render()}});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));["adventure","crew","gacha","empire"].forEach(id=>$(id).classList.toggle("hidden",id!==b.dataset.tab))});
+$("attackBtn").onclick=()=>hurt(Math.max(1,Math.floor(power()*.7)));
+$("nextIsland").onclick=()=>{if(s.wins>=3*(s.island+1)){if(s.island<islands.length-1){s.island++;s.wins=0;log(`Nova região desbloqueada: ${islands[s.island]}!`);enemy()}}else log(`Derrote mais ${3*(s.island+1)-s.wins} inimigos para liberar a próxima ilha.`)};
+$("pull1").onclick=()=>{if(s.berries<500){$("pullResult").textContent="Berries insuficientes!";return}s.berries-=500;$("pullResult").textContent="Recrutado: "+recruit();render()};
+$("pull10").onclick=()=>{if(s.berries<4500){$("pullResult").textContent="Berries insuficientes!";return}s.berries-=4500;let got=[];for(let i=0;i<10;i++)got.push(recruit());$("pullResult").textContent="Sua leva: "+got.join(" · ");render()};
+$("upgradeMarket").onclick=()=>{let c=800*s.market;if(s.berries>=c){s.berries-=c;s.market++;log("Mercado negro melhorado!");render()}};
+$("buildShip").onclick=()=>{let c=2000*s.ships;if(s.berries>=c){s.berries-=c;s.ships++;log("Novo navio construído!");render()}};
+$("upgradeRoute").onclick=()=>{let c=1500*(s.routes+1);if(s.berries>=c){s.berries-=c;s.routes++;log("Nova rota comercial estabelecida!");render()}};
+$("saveBtn").onclick=save;
+load();if(!s.enemyMax||s.enemyMax<1)enemy();else{ $("enemyName").textContent="Inimigo da região";render()}
+log("Bem-vindo aos mares! Sua aventura começa agora.");
+setInterval(()=>{s.berries+=income();hurt(Math.max(1,Math.floor(power()*.12)));render()},1000);
+setInterval(()=>{s.last=Date.now();localStorage.setItem("infiniteSeasSave",JSON.stringify(s))},10000);
+</script></body></html>
