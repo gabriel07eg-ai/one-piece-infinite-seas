@@ -69,6 +69,69 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .footer-note{color:#728895;font-size:10px;text-align:center;padding:20px}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;gap:4px;padding:7px}.nav-label,.side-note{display:none}.navbtn{width:auto;white-space:nowrap;padding:10px}.two-col,.map-layout{grid-template-columns:1fr}.map-board{min-height:420px}}
 @media(max-width:620px){.topbar{height:auto;min-height:68px;align-items:flex-start;padding:12px;gap:10px;flex-direction:column}.resources{width:100%}.resource{flex:1;min-width:0}.layout{padding:12px}.stats-row{grid-template-columns:repeat(2,1fr)}.hero{min-height:290px;padding:18px}.hero-art{right:-4%;top:8%;font-size:130px}.slot-list{grid-template-columns:repeat(2,1fr)}.page-head{align-items:flex-start;flex-direction:column}.map-board{min-height:390px}.island-node .land{width:51px;height:40px;font-size:21px}.island-node{min-width:70px}.island-node b{font-size:9px}}
+
+/* INFINITE SEAS — art direction: grand-line adventure */
+:root{--gold:#f0c66f;--gold2:#ffe4a4;--sea:#58b9b1;--panel:#102b3c}
+body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#081722 72%);background-attachment:fixed}
+.topbar{background:linear-gradient(90deg,#07131deF,#102b38ed,#07131def);border-bottom:1px solid #e7bd6840}
+.brand-mark{background:radial-gradient(circle,#f0c66f22,#07131d);box-shadow:inset 0 0 0 4px #e8bd6517,0 0 24px #e8bd6522}
+.brand strong{font-size:25px;letter-spacing:1.8px}
+.sidebar{background:linear-gradient(165deg,#183b4b,#0a1b28 80%);border-color:#d7b46b40}
+.navbtn.active{background:linear-gradient(100deg,#e8bd6533,#e8bd6507);box-shadow:inset 3px 0 var(--gold),0 5px 18px #0003}
+.page-head h1{font-size:clamp(34px,4.4vw,49px);text-shadow:0 3px 18px #0006;letter-spacing:1px}
+.page-head .eyebrow{color:#f3cd7d}
+.panel{background:linear-gradient(145deg,#18384aF2,#0b1e2cf5 76%);border-color:#e6c17a35;box-shadow:0 16px 35px #02090e70,inset 0 1px #ffffff0c}
+.hero{min-height:340px;border:1px solid #eac77b66;background:
+ linear-gradient(90deg,#071823f5 0%,#0a1e2bdc 42%,#0b27367a 100%),
+ radial-gradient(ellipse at 76% 25%,#e5bb6b 0,#568d83 12%,#245366 35%,#102d42 65%,#071722 100%);box-shadow:0 24px 65px #0008}
+.hero:after{content:"";position:absolute;inset:12px;border:1px solid #f4d69b4d;border-radius:12px;pointer-events:none}
+.hero:before{background:linear-gradient(0deg,#07141c 0,transparent 55%),repeating-linear-gradient(170deg,transparent 0 32px,#ffffff08 33px 34px)}
+.hero-art{right:1%;top:0;width:min(54%,590px);height:100%;opacity:.94;transform:none;filter:drop-shadow(0 18px 18px #00131c99)}
+.hero-art svg{width:100%;height:100%;overflow:visible}
+.hero-copy{max-width:610px}
+.hero h2{font-size:clamp(39px,5.4vw,64px);line-height:.91;text-shadow:0 4px 16px #0008}
+.hero p{font-size:14px;color:#d5e1dc;max-width:470px}
+.btn.primary{background:linear-gradient(135deg,#ffe5a4,#d6a54b);box-shadow:0 5px 18px #d7a84b33}
+.stats-row{gap:12px}
+.statbox{background:linear-gradient(145deg,#193b4b,#0d2535);border-color:#e6c17a35;position:relative;overflow:hidden}
+.statbox:after{content:"";position:absolute;width:70px;height:70px;border:1px solid #f0c66f1c;border-radius:50%;right:-27px;top:-30px}
+.ship-scene{min-height:220px;background:
+ radial-gradient(circle at 80% 20%,#f2d58c 0 22px,transparent 23px),
+ linear-gradient(180deg,#7eb5a8 0%,#377c80 43%,#1a5267 73%,#103349 100%);border-color:#e6c17a4a}
+.ship-scene:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#071b2b88,transparent 55%),repeating-linear-gradient(175deg,transparent 0 25px,#d5f4e51a 26px 28px);pointer-events:none}
+.deck-ship{position:relative;z-index:1;width:min(92%,490px);height:auto;filter:drop-shadow(0 14px 9px #06131c99);margin-top:18px}
+.scene-label{z-index:2;background:#071b2bc9;border:1px solid #f0c66f55;padding:6px 9px;border-radius:20px}
+.map-board{min-height:560px;border:2px solid #c99d5b;background:
+ radial-gradient(ellipse at 16% 22%,#7da66c 0 4%,transparent 4.4%),
+ radial-gradient(ellipse at 20% 25%,#b2bd79 0 2%,transparent 2.5%),
+ radial-gradient(ellipse at 72% 65%,#789c65 0 6%,transparent 6.5%),
+ radial-gradient(ellipse at 77% 61%,#a7b878 0 2.5%,transparent 3%),
+ radial-gradient(ellipse at 43% 38%,#789b68 0 5%,transparent 5.5%),
+ radial-gradient(ellipse at 47% 35%,#b1b97c 0 2%,transparent 2.5%),
+ radial-gradient(ellipse at 87% 18%,#789b68 0 4%,transparent 4.5%),
+ radial-gradient(ellipse at 88% 16%,#b4bf7b 0 1.8%,transparent 2.2%),
+ radial-gradient(ellipse at 50% 50%,#28677a 0,#15516a 52%,#0a344d 100%)}
+.map-board:before{inset:0;opacity:.32;background:
+ repeating-radial-gradient(ellipse at 50% 50%,transparent 0 44px,#b9e1cf 45px 46px,transparent 47px 90px),
+ repeating-linear-gradient(12deg,transparent 0 46px,#c8e7d81a 47px 48px);transform:rotate(-8deg)}
+.map-board:after{content:"N";position:absolute;right:24px;top:56px;width:58px;height:58px;border:1px solid #e8d4a0aa;border-radius:50%;display:grid;place-items:center;color:#f5dfac;font:800 17px 'Barlow Condensed';text-shadow:0 2px 5px #00131c;box-shadow:0 0 0 5px #ffffff0b,0 0 22px #00131c66;pointer-events:none}
+.map-title{top:18px;left:20px;font-size:27px;color:#f6e3b6;text-shadow:0 2px 8px #00131c}
+.island-node .land{width:70px;height:54px;border:3px solid #e5d09b;background:linear-gradient(145deg,#c1c88a,#638c69 60%,#315f59);box-shadow:0 8px 0 #092b3a,0 12px 22px #00131c88, inset 0 0 0 2px #ffffff2b}
+.island-node b{background:#071b2bdc;border:1px solid #d8bc7a55;padding:4px 8px;border-radius:6px;display:inline-block;margin-top:9px;font:700 11px 'Barlow Condensed';letter-spacing:.4px}
+.route-line{height:3px;background:repeating-linear-gradient(90deg,#ffe2a0 0 7px,transparent 7px 13px);filter:drop-shadow(0 1px 2px #00131c)}
+.detail-card{background:linear-gradient(155deg,#183a4a,#0a1e2d);border-color:#e5c17a55}
+.detail-card .island-illustration{background:linear-gradient(150deg,#4b8c83,#17445a);border:1px solid #e5c17a55}
+.activity{background:#0a1e2c;border-color:#e5c17a25}
+.char-card{background:linear-gradient(150deg,#204456,#0b2030);border-color:#e5c17a35}
+.footer-note{color:#829ca5}
+@media(max-width:620px){
+ .hero{min-height:360px}
+ .hero-art{width:78%;height:58%;right:-7%;top:0;opacity:.68}
+ .hero-copy{margin-top:125px}
+ .map-board{min-height:430px}
+ .map-board:after{right:12px;top:54px;width:42px;height:42px}
+}
+
 </style>
 </head>
 <body>
@@ -96,7 +159,26 @@ button:disabled{opacity:.42;cursor:not-allowed}
  <main class="content">
   <section class="view active" id="view-home">
    <div class="hero">
-    <div class="hero-art">⛵</div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 560 330" role="img">
+       <defs>
+        <linearGradient id="sail" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff2c8"/><stop offset="1" stop-color="#cda96b"/></linearGradient>
+        <linearGradient id="hull" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#9b6238"/><stop offset="1" stop-color="#42291f"/></linearGradient>
+        <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#8dd0c5" stop-opacity=".7"/><stop offset="1" stop-color="#1d6677" stop-opacity="0"/></linearGradient>
+       </defs>
+       <circle cx="420" cy="68" r="42" fill="#f3d28d" opacity=".72"/>
+       <path d="M34 270 Q110 244 178 267 T322 264 T530 260 L560 330H0Z" fill="url(#sea)"/>
+       <path d="M262 42V247" stroke="#563e2b" stroke-width="8"/>
+       <path d="M255 54L93 194H255Z" fill="url(#sail)" stroke="#6e543b" stroke-width="4"/>
+       <path d="M270 78L420 188H270Z" fill="url(#sail)" stroke="#6e543b" stroke-width="4"/>
+       <path d="M255 85L155 177H255Z" fill="#e9d5a6" stroke="#6e543b" stroke-width="3"/>
+       <path d="M60 242Q260 274 472 236L430 286Q238 320 105 279Z" fill="url(#hull)" stroke="#e5bd79" stroke-width="5"/>
+       <path d="M104 260Q258 283 447 253" fill="none" stroke="#d9a96c" stroke-width="5"/>
+       <path d="M265 40L270 20L281 42Z" fill="#e8bd65"/>
+       <path d="M30 304Q90 286 150 304T270 304T390 304T530 300" fill="none" stroke="#a8e0d5" stroke-width="5" opacity=".7"/>
+       <path d="M0 322Q70 306 140 322T280 322T420 322T560 318" fill="none" stroke="#a8e0d5" stroke-width="3" opacity=".45"/>
+      </svg>
+    </div>
     <div class="hero-copy"><div class="eyebrow">O mar está chamando, capitão</div><h2>Seu próprio<br>destino começa aqui.</h2><p>Explore ilhas, reúna aliados de todas as facções e construa uma tripulação que atravesse os mares mais perigosos.</p><div class="hero-actions"><button class="btn primary" data-go="world">Explorar o mundo →</button><button class="btn" data-go="crew">Ver tripulação</button></div></div>
    </div>
    <div class="stats-row">
@@ -106,7 +188,18 @@ button:disabled{opacity:.42;cursor:not-allowed}
     <div class="statbox"><small>Vitórias</small><b id="wins">0</b></div>
    </div>
    <div class="two-col">
-    <div class="panel"><div class="panel-title"><h2>Vida a bordo</h2><span class="eyebrow">Seu navio</span></div><div class="ship-scene"><span class="scene-label" id="shipLocation">Navegando pelo East Blue</span><div class="ship-emoji">⛵</div></div><p class="muted tiny" style="line-height:1.6;margin-bottom:0">A tripulação trabalha, descansa e se prepara para a próxima ilha. As viagens e atividades continuam avançando mesmo quando você está longe.</p></div>
+    <div class="panel"><div class="panel-title"><h2>Vida a bordo</h2><span class="eyebrow">Seu navio</span></div><div class="ship-scene"><span class="scene-label" id="shipLocation">Navegando pelo East Blue</span>
+      <svg class="deck-ship" viewBox="0 0 520 220" aria-label="Ilustração do navio da tripulação">
+       <defs><linearGradient id="deckSail" x1="0" x2="1"><stop stop-color="#fff0c7"/><stop offset="1" stop-color="#c8a36b"/></linearGradient></defs>
+       <circle cx="420" cy="44" r="27" fill="#f2d38d" opacity=".8"/>
+       <path d="M250 24V166" stroke="#503c2a" stroke-width="7"/>
+       <path d="M244 35L120 145H244Z" fill="url(#deckSail)" stroke="#6d533b" stroke-width="3"/>
+       <path d="M258 49L376 142H258Z" fill="url(#deckSail)" stroke="#6d533b" stroke-width="3"/>
+       <path d="M78 157Q255 182 439 151L399 193Q240 214 115 186Z" fill="#69432d" stroke="#d3a76b" stroke-width="5"/>
+       <path d="M114 174Q258 194 415 166" fill="none" stroke="#e0b778" stroke-width="4"/>
+       <path d="M0 205Q70 188 140 205T280 205T420 205T520 202" fill="none" stroke="#b8e5d9" stroke-width="4" opacity=".7"/>
+      </svg>
+    </div><p class="muted tiny" style="line-height:1.6;margin-bottom:0">A tripulação trabalha, descansa e se prepara para a próxima ilha. As viagens e atividades continuam avançando mesmo quando você está longe.</p></div>
     <div class="panel"><div class="panel-title"><h2>Diário de bordo</h2><span class="eyebrow">Recentes</span></div><div class="activity-list" id="homeLog"><div class="activity"><div class="activity-icon">📜</div><div><b>Uma nova jornada</b><small>Seu navio está pronto para zarpar.</small></div></div></div></div>
    </div>
   </section>
@@ -242,7 +335,7 @@ const defaultState=()=>({
 let s=defaultState(),currentFilter='all',selectMode=false,toastTimer;
 function log(t){s.logs.unshift(t);s.logs=s.logs.slice(0,10)}
 function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
-function save(){s.last=now();localStorage.setItem('infiniteSeasSaveV2',JSON.stringify(s))}
+function save(){localStorage.setItem('infiniteSeasSaveV2',JSON.stringify(s))}
 function load(){
  try{let v=JSON.parse(localStorage.getItem('infiniteSeasSaveV2'));if(v){s={...defaultState(),...v};s.upgrades={...defaultState().upgrades,...(v.upgrades||{})}}}catch(e){}
  const elapsed=Math.min(8*3600,Math.max(0,(now()-s.last)/1000));
@@ -354,7 +447,7 @@ $('pullOne').onclick=()=>pull(1);$('pullTen').onclick=()=>pull(10);
 $('formationBtn').onclick=()=>toast('Use os botões nos cartões para alternar ativos e reservas.');
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderCrew()});
 load();renderAll();setInterval(()=>{s.berries+=income();damageTick();resolveExpeditions();renderResources();renderRecruit();renderExpeditions();save()},1000);
-window.addEventListener('beforeunload',save);
+window.addEventListener('beforeunload',()=>{s.last=now();save()});
 })();
 </script>
 </body>
