@@ -132,6 +132,50 @@ body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#08172
  .map-board:after{right:12px;top:54px;width:42px;height:42px}
 }
 
+
+/* V4 — campaign-first progression and recruitment reveal */
+.optc-portrait{width:100%;height:100%;max-height:112px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 7px 8px #0008)}
+.portrait-fallback{width:100%;height:100%;place-items:center;font-size:54px}
+.char-avatar{display:grid;place-items:center;overflow:hidden}
+.char-avatar .optc-portrait{max-height:95px}
+.reveal-avatar .optc-portrait{max-height:112px}.slot-avatar .optc-portrait{max-height:58px;width:100%;height:100%;object-fit:contain}
+.campaign-panel{margin:0 0 16px;padding:22px;background:linear-gradient(135deg,#173d4b,#0c2231 70%);border:1px solid #e8bd6570;box-shadow:0 14px 32px #0005}
+.campaign-top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.campaign-top h2{font-size:clamp(23px,3vw,32px);margin:5px 0 7px;color:#ffe1a0}
+.campaign-top p{color:#b9cbd0;max-width:650px;line-height:1.6;margin:0}
+.campaign-mark{font-size:38px;filter:drop-shadow(0 5px 10px #0006)}
+.campaign-progress{height:7px;border-radius:9px;background:#ffffff16;margin:20px 0 9px;overflow:hidden}
+.campaign-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#d6a74e,#ffe4a4);transition:width .35s}
+.campaign-meta{display:flex;justify-content:space-between;gap:12px;color:#9db5bd;font-size:12px}
+.campaign-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.recruit-history{margin-top:14px;padding:16px}
+.recruit-history .pull-result{background:transparent;border:0;padding:0;display:flex;gap:8px;flex-wrap:wrap}
+.reveal-backdrop{position:fixed;inset:0;z-index:1000;background:#020910eF;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(9px)}
+.reveal-backdrop.open{display:flex;animation:fadeIn .2s ease}
+.reveal-window{width:min(900px,100%);max-height:90vh;overflow:auto;border:1px solid #e9c36b88;border-radius:20px;background:radial-gradient(circle at 50% 0,#31596a,#102536 55%,#091722);box-shadow:0 30px 90px #000b;padding:clamp(18px,3vw,30px)}
+.reveal-head{text-align:center}
+.reveal-head h2{font-size:clamp(25px,4vw,38px);color:#ffe1a0;margin:5px 0}
+.reveal-head p{color:#b7cbd2;margin:0 0 18px}
+.reveal-stage{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.reveal-card{position:relative;min-height:205px;border-radius:14px;border:1px solid #ffffff24;background:linear-gradient(155deg,#25485a,#102435);padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;animation:cardReveal .55s both;overflow:hidden}
+.reveal-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 15%,#f2d28b20,transparent 60%);pointer-events:none}
+.reveal-avatar{width:100px;height:112px;display:grid;place-items:center;font-size:65px;filter:drop-shadow(0 8px 9px #0008);position:relative}
+.reveal-card b{font-size:13px;position:relative}
+.reveal-card small{color:#b6cbd1;font-size:11px;position:relative}
+.reveal-card .rarity-tag{font-size:11px;letter-spacing:1px;font-weight:900;color:#ffe2a0;position:relative}
+.reveal-card.ssr{border-color:#f5d37d;box-shadow:inset 0 0 25px #f5d37d20,0 0 18px #f5d37d18}
+.reveal-card.sr{border-color:#83c9ee}
+.reveal-card.duplicate{background:linear-gradient(155deg,#4a3a2a,#172738)}
+.reveal-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;color:#a9c1c9;font-size:12px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes cardReveal{from{opacity:0;transform:translateY(22px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+.battle-gate{padding:20px;border:1px dashed #e8bd6577;border-radius:14px;background:#071925;text-align:center}
+.battle-gate h3{color:#ffe1a0;margin:0 0 8px}
+.battle-gate p{color:#aec3ca;line-height:1.6}
+.power-warning{color:#ffcf91;font-size:12px;margin-top:8px}
+.char-role .version-tag{display:inline-block;padding:2px 7px;border-radius:20px;background:#ffffff12;color:#d9c18e;font-size:10px;margin-right:5px}
+@media(max-width:620px){.campaign-meta{flex-direction:column}.reveal-card{min-height:175px}.reveal-avatar{height:90px;font-size:55px}}
+
 </style>
 </head>
 <body>
@@ -181,6 +225,14 @@ body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#08172
     </div>
     <div class="hero-copy"><div class="eyebrow">O mar está chamando, capitão</div><h2>Seu próprio<br>destino começa aqui.</h2><p>Explore ilhas, reúna aliados de todas as facções e construa uma tripulação que atravesse os mares mais perigosos.</p><div class="hero-actions"><button class="btn primary" data-go="world">Explorar o mundo →</button><button class="btn" data-go="crew">Ver tripulação</button></div></div>
    </div>
+
+   <div class="campaign-panel panel" id="campaignPanel">
+    <div class="campaign-top"><div><div class="eyebrow">Campanha principal · East Blue</div><h2 id="campaignTitle">Uma aventura começa</h2><p id="campaignDesc">Antes de enfrentar os mares, conheça sua tripulação e prepare-se para zarpar.</p></div><span class="campaign-mark">📜</span></div>
+    <div class="campaign-progress"><span id="campaignProgress"></span></div>
+    <div class="campaign-meta"><span id="campaignStepLabel">Prólogo</span><span id="campaignPowerLabel">Poder recomendado: —</span></div>
+    <div class="campaign-actions"><button class="btn primary" id="campaignAction">Começar aventura</button><button class="btn" id="campaignTeam">Montar tripulação</button></div>
+   </div>
+
    <div class="stats-row">
     <div class="statbox"><small>Região atual</small><b id="homeRegion">East Blue</b></div>
     <div class="statbox"><small>Ilhas descobertas</small><b id="islandsFound">1 / 12</b></div>
@@ -227,9 +279,9 @@ body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#08172
   </section>
 
   <section class="view" id="view-crew">
-   <div class="page-head"><div><div class="eyebrow">Coleção livre</div><h1>Tripulação & personagens</h1><p>Todo personagem evolui individualmente. Pré e pós-timeskip são versões jogáveis distintas; roupas alternativas são apenas cosméticas.</p></div><button class="btn" id="formationBtn">Editar formação</button></div>
+   <div class="page-head"><div><div class="eyebrow">Coleção livre</div><h1>Tripulação & personagens</h1><p>Todo personagem evolui individualmente. As versões de cada personagem são unidades distintas; roupas alternativas são apenas cosméticas.</p></div><button class="btn" id="formationBtn">Editar formação</button></div>
    <div class="panel" style="margin-bottom:14px"><div class="panel-title"><h2>Formação atual</h2><span class="muted tiny">Selecione personagens abaixo para trocar os espaços</span></div><div class="team-block"><h3>Ativos · até 5</h3><div class="slot-list" id="crewActiveSlots"></div></div><div class="team-block"><h3>Reservas · até 5</h3><div class="slot-list" id="crewReserveSlots"></div></div></div>
-   <div class="filters" id="crewFilters"><button class="filter active" data-filter="all">Todos</button><button class="filter" data-filter="active">Ativos</button><button class="filter" data-filter="reserve">Reservas</button><button class="filter" data-filter="pre">Pré-timeskip</button><button class="filter" data-filter="post">Pós-timeskip</button></div>
+   <div class="filters" id="crewFilters"><button class="filter active" data-filter="all">Todos</button><button class="filter" data-filter="active">Ativos</button><button class="filter" data-filter="reserve">Reservas</button><button class="filter" data-filter="pre">Pré</button><button class="filter" data-filter="post">Pós</button></div>
    <div class="crew-grid" id="crewGrid"></div>
   </section>
 
@@ -237,7 +289,7 @@ body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#08172
    <div class="page-head"><div><div class="eyebrow">Taverna de recrutamento</div><h1>Novos companheiros</h1><p>Use Dials de recrutamento, conquistados jogando. Não há compra com dinheiro real.</p></div></div>
    <div class="banner"><div class="eyebrow">Recrutamento especial · permanente</div><h2>O mundo inteiro pode se juntar a você.</h2><p>Personagens de todas as facções. Versões pré e pós-timeskip podem ser unidades distintas. Skins não aparecem no gacha.</p><div class="pull-actions"><button class="btn primary" id="pullOne">Invocar ×1 · 10 Dials</button><button class="btn" id="pullTen">Invocar ×10 · 90 Dials</button></div></div>
    <div class="two-col"><div class="panel"><div class="panel-title"><h2>Taxas de recrutamento</h2><span class="eyebrow">Valores iniciais</span></div><div class="activity-list"><div class="activity"><div class="activity-icon">🟣</div><div><b>SSR · 5%</b><small>Personagens de destaque</small></div></div><div class="activity"><div class="activity-icon">🔵</div><div><b>SR · 20%</b><small>Aliados experientes</small></div></div><div class="activity"><div class="activity-icon">⚪</div><div><b>R · 35%</b><small>Tripulantes habilidosos</small></div></div><div class="activity"><div class="activity-icon">🟤</div><div><b>N · 40%</b><small>Personagens de apoio e coleção</small></div></div></div></div><div class="panel"><div class="panel-title"><h2>Garantias</h2><span class="eyebrow">Pity</span></div><p class="muted tiny" style="line-height:1.7">Contador de garantia é exibido aqui. Valores atuais são provisórios para teste e poderão ser ajustados: garantia SSR em 60 invocações; se perder o destaque de um banner futuro, o próximo SSR será garantido como destaque.</p><div class="statbox"><small>Invocações desde o último SSR</small><b id="pity">0 / 60</b></div><div class="progress"><span id="pityBar" style="width:0%"></span></div></div></div>
-   <div class="pull-result" id="pullResult">Sua próxima história pode começar com um novo aliado.</div>
+   <div class="panel recruit-history"><div class="panel-title"><h2>Último recrutamento</h2><span class="eyebrow">Histórico resumido</span></div><div id="pullResult" class="pull-result">Nenhum recrutamento realizado ainda.</div></div>
   </section>
 
   <section class="view" id="view-expeditions">
@@ -257,6 +309,15 @@ body{background:radial-gradient(ellipse at 52% -12%,#386c70 0,#163b4a 28%,#08172
   <div class="footer-note">Protótipo jogável · progresso salvo neste navegador · valores de economia ainda em balanceamento</div>
  </main>
 </div>
+
+<div class="reveal-backdrop" id="revealBackdrop" aria-hidden="true">
+ <div class="reveal-window">
+  <div class="reveal-head"><div class="eyebrow">Recrutamento concluído</div><h2 id="revealTitle">Novos companheiros!</h2><p id="revealSubtitle">Veja quem atendeu ao chamado.</p></div>
+  <div class="reveal-stage" id="revealStage"></div>
+  <div class="reveal-footer"><span id="revealCount">Resultados</span><button class="btn primary" id="revealClose">Continuar</button></div>
+ </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <script>
 (()=>{
@@ -384,18 +445,20 @@ function renderMap(){
  $('travelBtn').onclick=()=>travel(isl.id);
 }
 function travel(id){
+ if(!s.campaignStarted)return toast('Comece a campanha antes de navegar.');
  if(id>=s.unlocked)return toast('Esta ilha ainda não foi descoberta.');
+ if(!s.missionCleared && id!==currentMission().island)return toast('Conclua a missão atual para avançar na história.');
  s.currentIsland=id;s.selectedIsland=id;resetEnemy();log(`O navio chegou a ${islands[id].name}.`);renderAll();toast(`Chegamos a ${islands[id].name}!`);showView('battle');
 }
 function renderBattle(){
  const isl=islands[s.currentIsland];$('battleLocation').textContent=isl.name;$('enemyName').textContent=enemyName();$('enemyTitle').textContent=enemyName();$('enemySub').textContent=`Ameaça de nível ${isl.level} · Região: ${isl.region}`;$('enemyLevel').textContent='AMEAÇA '+isl.danger.toUpperCase();$('enemyIcon').textContent=['🏴‍☠️','🎯','⚓','💀','🛡️'][s.wins%5];$('enemyHp').textContent=`${fmt(Math.max(0,s.enemyHp))} / ${fmt(s.enemyMax)}`;$('enemyBar').style.width=Math.max(0,s.enemyHp/s.enemyMax*100)+'%';$('battleStatus').textContent=`Dano automático: ${fmt(totalPower()*.075)} por segundo`;$('activeSlots').innerHTML=slotHTML(s.active);$('reserveSlots').innerHTML=slotHTML(s.reserves,true);
 }
-function slotHTML(ids,reserve=false){return Array.from({length:5},(_,i)=>{let c=character(ids[i]);return `<div class="slot ${c?'filled':''}">${c?`<div class="slot-avatar">${c.emoji}</div><b>${c.name.split(' ')[0]}</b><small>${reserve?c.buff:c.role}</small>`:`<div class="slot-avatar">＋</div><b>Vazio</b><small>${reserve?'Reserva':'Ativo'}</small>`}</div>`}).join('')}
+function slotHTML(ids,reserve=false){return Array.from({length:5},(_,i)=>{let c=character(ids[i]);return `<div class="slot ${c?'filled':''}">${c?`<div class="slot-avatar">${portrait(c.id,c.emoji)}</div><b>${c.name.split(' ')[0]}</b><small>${reserve?c.buff:c.role}</small>`:`<div class="slot-avatar">＋</div><b>Vazio</b><small>${reserve?'Reserva':'Ativo'}</small>`}</div>`}).join('')}
 function renderCrew(){
  $('crewActiveSlots').innerHTML=slotHTML(s.active);$('crewReserveSlots').innerHTML=slotHTML(s.reserves,true);
  let list=s.characters.map(o=>({...character(o.id),owned:o})).filter(c=>c.id);
  if(currentFilter==='active')list=list.filter(c=>s.active.includes(c.id));if(currentFilter==='reserve')list=list.filter(c=>s.reserves.includes(c.id));if(currentFilter==='pre')list=list.filter(c=>c.ver==='Pré-timeskip');if(currentFilter==='post')list=list.filter(c=>c.ver==='Pós-timeskip');
- $('crewGrid').innerHTML=list.map(c=>`<article class="char-card"><div class="char-top"><div class="char-avatar">${c.emoji}</div><div><div class="rarity">${c.rarity} · ${c.faction}</div><div class="char-name">${c.name}</div><div class="char-role">${c.ver} · ${c.role}</div></div></div><div class="char-stats"><span>⚔️ Poder ${fmt(getPower(c.id))}</span><span>Nv. ${c.owned.level}</span></div><div class="progress"><span style="width:${Math.min(100,c.owned.xp/(100+c.owned.level*55)*100)}%"></span></div><div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-level="${c.id}">Treinar · ${fmt(120*c.owned.level)} ฿</button><button class="btn small ghost" data-slot="${c.id}">${s.active.includes(c.id)?'Ativo':s.reserves.includes(c.id)?'Reserva':'Adicionar'}</button></div><div class="tiny muted" style="margin-top:8px">Buff de reserva: ${c.buff}</div></article>`).join('')||'<div class="empty">Nenhum personagem nesta categoria.</div>';
+ $('crewGrid').innerHTML=list.map(c=>`<article class="char-card"><div class="char-top"><div class="char-avatar">${portrait(c.id,c.emoji)}</div><div><div class="rarity">${c.rarity} · ${c.faction}</div><div class="char-name">${c.name}</div><div class="char-role">${c.ver} · ${c.role}</div></div></div><div class="char-stats"><span>⚔️ Poder ${fmt(getPower(c.id))}</span><span>Nv. ${c.owned.level}</span></div><div class="progress"><span style="width:${Math.min(100,c.owned.xp/(100+c.owned.level*55)*100)}%"></span></div><div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-level="${c.id}">Treinar · ${fmt(120*c.owned.level)} ฿</button><button class="btn small ghost" data-slot="${c.id}">${s.active.includes(c.id)?'Ativo':s.reserves.includes(c.id)?'Reserva':'Adicionar'}</button></div><div class="tiny muted" style="margin-top:8px">Buff de reserva: ${c.buff}</div></article>`).join('')||'<div class="empty">Nenhum personagem nesta categoria.</div>';
  document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>train(b.dataset.level));document.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>toggleSlot(b.dataset.slot));
 }
 function train(id){let o=owned(id),cost=120*o.level;if(s.berries<cost)return toast('Berries insuficientes.');s.berries-=cost;o.level++;log(`${character(id).name} treinou até o nível ${o.level}.`);renderAll();toast('Treinamento concluído.')}
@@ -446,7 +509,148 @@ $('attackBtn').onclick=()=>{s.enemyHp-=Math.max(1,Math.floor(totalPower()*.7));i
 $('pullOne').onclick=()=>pull(1);$('pullTen').onclick=()=>pull(10);
 $('formationBtn').onclick=()=>toast('Use os botões nos cartões para alternar ativos e reservas.');
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderCrew()});
-load();renderAll();setInterval(()=>{s.berries+=income();damageTick();resolveExpeditions();renderResources();renderRecruit();renderExpeditions();save()},1000);
+
+// V4 campaign state: old saves keep their collection, but combat is paused until the player begins.
+function initV4(){
+ const had=localStorage.getItem('infiniteSeasV4Init');
+ if(!had){
+  s.campaignStarted=false;s.campaignStage=0;s.missionActive=false;s.missionCleared=false;
+  s.active=[];s.reserves=[];
+  if(!owned('luffy_pre'))s.characters.unshift({id:'luffy_pre',level:1,xp:0,dupes:0,skin:null});
+  localStorage.setItem('infiniteSeasV4Init','1');
+ }
+ if(typeof s.campaignStarted!=='boolean')s.campaignStarted=false;
+ if(typeof s.campaignStage!=='number')s.campaignStage=0;
+ s.missionActive=false;
+}
+const campaignMissions=[
+ {island:0,title:'O começo de uma aventura',desc:'Conheça Foosha Village. Reúna seus primeiros companheiros e prepare-se para zarpar.',enemy:'Bandido do Monte',boss:'Higuma',power:0,hp:75,reward:120,unlock:'luffy_pre'},
+ {island:0,title:'Uma promessa no mar',desc:'Treine com seu primeiro companheiro e conclua o prólogo.',enemy:'Ladrões da costa',boss:'Chefe dos saqueadores',power:18,hp:180,reward:180},
+ {island:1,title:'A base da Marinha',desc:'Chegue a Shells Town e liberte o espadachim preso.',enemy:'Marinheiros da base',boss:'Morgan',power:45,hp:420,reward:300,unlock:'zoro_pre'},
+ {island:2,title:'A cidade tomada',desc:'Investigue Orange Town e enfrente os piratas que tomaram a cidade.',enemy:'Piratas de Buggy',boss:'Buggy',power:85,hp:780,reward:420,unlock:'nami_pre'},
+ {island:3,title:'O mentiroso da vila',desc:'Proteja Syrup Village dos planos de Kuro.',enemy:'Piratas do Gato Negro',boss:'Kuro',power:145,hp:1300,reward:620,unlock:'usopp_pre'},
+ {island:3,title:'Um cozinheiro para o navio',desc:'Conclua o encontro no Baratie e convença Sanji a partir.',enemy:'Piratas de Krieg',boss:'Don Krieg',power:210,hp:1900,reward:850,unlock:'sanji_pre'},
+ {island:3,title:'O peso de um mapa',desc:'Enfrente Arlong e conclua a primeira grande etapa da jornada.',enemy:'Homens-peixe',boss:'Arlong',power:300,hp:2800,reward:1200,unlock:'chopper_pre'}
+];
+
+const optcArt={
+ luffy_pre:'https://www.spriters-resource.com/media/asset_icons/76/78922.png?updated=1756001066',
+ zoro_pre:'https://www.spriters-resource.com/media/asset_icons/75/78625.png?updated=1765937815',
+ nami_pre:'https://www.spriters-resource.com/media/asset_icons/76/78931.png?updated=1765940372',
+ usopp_pre:'https://www.spriters-resource.com/media/asset_icons/216/219392.png?updated=1765949368'
+};
+function portrait(id,emoji){
+ const src=optcArt[id];
+ return src?`<img class="optc-portrait" src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><span class="portrait-fallback" style="display:none">${emoji}</span>`:`<span class="portrait-fallback">${emoji}</span>`;
+}
+
+function currentMission(){return campaignMissions[Math.min(Number(s.campaignStage)||0,campaignMissions.length-1)]}
+function campaignPower(){return s.active.reduce((n,id)=>n+getPower(id),0)}
+function renderCampaign(){
+ const p=currentMission(),started=s.campaignStarted,done=s.campaignStage>=campaignMissions.length;
+ $('campaignTitle').textContent=done?'East Blue concluído!':(started?p.title:'Uma aventura começa');
+ $('campaignDesc').textContent=done?'Você concluiu o primeiro capítulo. A Grand Line aguarda sua tripulação.':(started?p.desc:'Você ainda não precisa lutar. Primeiro, conheça sua jornada e monte sua primeira equipe.');
+ $('campaignStepLabel').textContent=done?'Capítulo 1 · concluído':`Missão ${s.campaignStage+1} de ${campaignMissions.length} · ${p.island===0?'Foosha Village':islands[p.island].name}`;
+ $('campaignPowerLabel').textContent=done?'Próximo capítulo em breve':`Poder recomendado: ${p.power||'tutorial'} · Seu poder: ${campaignPower()}`;
+ $('campaignProgress').style.width=(done?100:(s.campaignStage/campaignMissions.length*100))+'%';
+ $('campaignAction').textContent=!started?'Começar aventura':done?'Capítulo concluído':s.missionCleared?'Continuar campanha':'Ir para a missão';
+ $('campaignTeam').textContent=s.active.length?'Editar tripulação':'Montar primeira equipe';
+}
+function beginCampaign(){
+ if(!s.campaignStarted){
+  s.campaignStarted=true;
+  if(!owned('luffy_pre'))s.characters.unshift({id:'luffy_pre',level:1,xp:0,dupes:0,skin:null});
+  if(!s.active.includes('luffy_pre'))s.active=['luffy_pre'];
+  log('A aventura começou em Foosha Village. Luffy se juntou à sua jornada.');
+  toast('Luffy entrou para sua tripulação!');
+  renderAll();showView('crew');return;
+ }
+ if(s.missionCleared){
+  s.campaignStage++;s.missionCleared=false;s.missionActive=false;
+  if(s.campaignStage<campaignMissions.length){
+   const m=currentMission();s.currentIsland=m.island;s.selectedIsland=m.island;s.unlocked=Math.max(s.unlocked,m.island+1);
+   if(m.unlock&&!owned(m.unlock))s.characters.push({id:m.unlock,level:1,xp:0,dupes:0,skin:null});
+   log(`Nova missão: ${m.title}.`);
+  }else log('Capítulo East Blue concluído.');
+  renderAll();showView('home');return;
+ }
+ if(s.campaignStage===0&&s.active.length<1){toast('Monte sua primeira equipe antes de avançar.');showView('crew');return}
+ startCampaignMission();
+}
+function startCampaignMission(){
+ const m=currentMission();
+ if(m.power&&campaignPower()<m.power){toast(`Poder insuficiente. Recomendado: ${m.power}. Treine ou ajuste sua equipe.`);showView('crew');return}
+ s.currentIsland=m.island;s.selectedIsland=m.island;s.enemyMax=m.hp;s.enemyHp=m.hp;s.missionActive=true;
+ renderAll();showView('battle');toast('Missão iniciada!');
+}
+function finishCampaignMission(){
+ const m=currentMission();s.missionActive=false;s.missionCleared=true;s.berries+=m.reward;s.dials+=5;s.materials+=2;s.wins++;addXP(25);
+ if(m.unlock&&!owned(m.unlock))s.characters.push({id:m.unlock,level:1,xp:0,dupes:0,skin:null});
+ log(`Missão concluída: ${m.title}. +${fmt(m.reward)} Berries.`);
+ renderAll();toast('Missão concluída! Volte ao diário para avançar.');
+}
+function renderBattleV4(){
+ const m=currentMission(),active=s.campaignStarted&&s.missionActive&&!s.missionCleared;
+ $('battleLocation').textContent=islands[m.island].name;
+ $('enemyName').textContent=active?m.boss:'Próximo confronto';
+ $('enemyTitle').textContent=active?m.enemy:'A campanha aguarda você';
+ $('enemySub').textContent=active?m.desc:'Nenhuma batalha está acontecendo. Avance pela campanha quando estiver preparado.';
+ $('enemyLevel').textContent=active?'CHEFE DE MISSÃO':'EM ESPERA';
+ $('enemyIcon').textContent=active?'⚔️':'📜';
+ $('enemyHp').textContent=active?`${fmt(Math.max(0,s.enemyHp))} / ${fmt(s.enemyMax)}`:'—';
+ $('enemyBar').style.width=active?Math.max(0,s.enemyHp/s.enemyMax*100)+'%':'0%';
+ $('battleStatus').textContent=active?`Dano automático: ${fmt(totalPower()*.075)} por segundo`:'A campanha está pausada.';
+ $('activeSlots').innerHTML=slotHTML(s.active);$('reserveSlots').innerHTML=slotHTML(s.reserves,true);
+ const feed=$('battleFeed');
+ if(!active){
+  feed.className='battle-gate';
+  feed.innerHTML=`<h3>${s.missionCleared?'Vitória confirmada!':'Nenhuma luta em andamento'}</h3><p>${s.missionCleared?'Você venceu esta etapa. Volte ao convés para continuar a história.':'Escolha uma missão no diário de bordo. O combate só começa quando você autorizar.'}</p><button class="btn primary" onclick="document.getElementById('campaignAction').click()">${s.missionCleared?'Continuar campanha':'Ver campanha'}</button>`;
+ }else{
+  feed.className='pull-result';feed.textContent='Sua tripulação está enfrentando o inimigo. Você pode acompanhar o combate automático.';
+ }
+}
+function damageTickV4(){
+ if(!s.missionActive||!s.campaignStarted||s.missionCleared||!s.active.length)return;
+ const m=currentMission(),b=reserveBuff(),damage=Math.max(1,Math.floor(totalPower()*.075*(1+b.speed*.006)));
+ s.enemyHp-=damage;
+ if(s.enemyHp<=0)finishCampaignMission();else renderBattleV4();
+}
+function renderCrewV4(){
+ $('crewActiveSlots').innerHTML=slotHTML(s.active);$('crewReserveSlots').innerHTML=slotHTML(s.reserves,true);
+ let list=s.characters.map(o=>({...character(o.id),owned:o})).filter(c=>c.id);
+ if(currentFilter==='active')list=list.filter(c=>s.active.includes(c.id));if(currentFilter==='reserve')list=list.filter(c=>s.reserves.includes(c.id));if(currentFilter==='pre')list=list.filter(c=>c.ver==='Pré-timeskip');if(currentFilter==='post')list=list.filter(c=>c.ver==='Pós-timeskip');
+ $('crewGrid').innerHTML=list.map(c=>`<article class="char-card"><div class="char-top"><div class="char-avatar">${portrait(c.id,c.emoji)}</div><div><div class="rarity">${c.rarity} · ${c.faction}</div><div class="char-name">${c.name}</div><div class="char-role"><span class="version-tag">${c.ver==='Pré-timeskip'?'Pré':'Pós'}</span>${c.role}</div></div></div><div class="char-stats"><span>⚔️ Poder ${fmt(getPower(c.id))}</span><span>Nv. ${c.owned.level}</span></div><div class="progress"><span style="width:${Math.min(100,c.owned.xp/(100+c.owned.level*55)*100)}%"></span></div><div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn small" data-level="${c.id}">Treinar · ${fmt(120*c.owned.level)} ฿</button><button class="btn small ghost" data-slot="${c.id}">${s.active.includes(c.id)?'Ativo':s.reserves.includes(c.id)?'Reserva':'Adicionar'}</button></div><div class="tiny muted" style="margin-top:8px">Buff de reserva: ${c.buff}</div></article>`).join('')||'<div class="empty">Nenhum personagem nesta categoria.</div>';
+ document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>train(b.dataset.level));document.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>toggleSlot(b.dataset.slot));
+}
+function pullV4(count){
+ const cost=count===10?90:10;if(s.dials<cost)return toast('Dials insuficientes. Continue explorando para ganhar mais.');
+ s.dials-=cost;let results=[];
+ for(let i=0;i<count;i++){
+  s.pity++;let rarity=s.pity>=60?'SSR':rollRarity();if(rarity==='SSR')s.pity=0;
+  let pool=charPool.filter(c=>c.rarity===rarity);if(!pool.length)pool=charPool.filter(c=>c.rarity==='R');
+  let pick=pool[Math.floor(Math.random()*pool.length)],o=owned(pick.id),duplicate=false,detail='';
+  if(o){duplicate=true;o.dupes=Math.min(3,o.dupes+1);if(o.dupes>=3){s.materials+=3;detail='Limite de duplicatas · +3 materiais'}else detail=`Duplicata ${o.dupes}/3`;}
+  else{s.characters.push({id:pick.id,level:1,xp:0,dupes:0,skin:null});detail='Novo personagem';}
+  results.push({id:pick.id,name:pick.name,ver:pick.ver,rarity:pick.rarity,emoji:pick.emoji,duplicate,detail});
+ }
+ renderAll();
+ $('revealTitle').textContent=count===10?'Recrutamento ×10':'Novo companheiro';
+ $('revealSubtitle').textContent='Cada resultado é revelado como uma carta individual.';
+ $('revealCount').textContent=`${count} resultado${count>1?'s':''}`;
+ $('revealStage').innerHTML=results.map((c,i)=>`<div class="reveal-card ${c.rarity.toLowerCase()} ${c.duplicate?'duplicate':''}" style="animation-delay:${i*.07}s"><div class="rarity-tag">${c.rarity}${c.duplicate?' · DUPLICATA':''}</div><div class="reveal-avatar">${portrait(c.id,c.emoji)}</div><b>${escapeHTML(c.name)}</b><small>${c.ver==='Pré-timeskip'?'Pré':'Pós'} · ${escapeHTML(c.detail)}</small></div>`).join('');
+ $('revealBackdrop').classList.add('open');$('revealBackdrop').setAttribute('aria-hidden','false');
+ $('pullResult').innerHTML=results.map(c=>`<span class="history-chip">${c.rarity} · ${escapeHTML(c.name)} ${c.duplicate?'(dup.)':''}</span>`).join('');
+}
+function renderAllV4(){renderResources();renderMap();renderBattleV4();renderCrewV4();renderExpeditions();renderShop();renderUpgrades();renderRecruit();renderCampaign();save()}
+$('campaignAction').onclick=beginCampaign;
+$('campaignTeam').onclick=()=>showView('crew');
+$('revealClose').onclick=()=>{$('revealBackdrop').classList.remove('open');$('revealBackdrop').setAttribute('aria-hidden','true')};
+$('revealBackdrop').addEventListener('click',e=>{if(e.target===$('revealBackdrop'))$('revealClose').click()});
+renderBattle=renderBattleV4;renderCrew=renderCrewV4;damageTick=damageTickV4;pull=pullV4;renderAll=renderAllV4;
+load();initV4();renderAllV4();
+setInterval(()=>{if(s.campaignStarted)s.berries+=income();damageTickV4();resolveExpeditions();renderResources();renderRecruit();renderExpeditions();renderCampaign();save()},1000);
+window.addEventListener('beforeunload',()=>{s.last=now();save()});
+
 window.addEventListener('beforeunload',()=>{s.last=now();save()});
 })();
 </script>
